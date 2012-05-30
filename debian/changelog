@@ -1,5 +1,6 @@
-lucene-search-2 (2.1.3wm1) lucid-wikimedia; urgency=low
+lucene-search-2 (2.1.3wm2) precise-wikimedia; urgency=low
 
-  * initial debianization
+  * initial precise build
 
- -- peter youngmeister <py@wikimedia.org>  Wed, 11 Jan 2012 16:17:10 -0500
+ -- peter youngmeister <py@wikimedia.org>  Wed, 30 May 2012 16:17:10 -0500
+
