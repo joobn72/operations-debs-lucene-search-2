@@ -1,0 +1,14 @@
+Source: lucene-search-2
+Section: web
+Priority: optional
+Maintainer: Peter Youngmeister <py@wikimedia.org>
+Build-Depends: oracle-j2sdk1.6, ant, debhelper (>= 7.0.50~), javahelper (>=0.25)
+Standards-Version: 3.8.4
+
+Package: lucene-search-2
+Architecture: all
+Depends: oracle-j2sdk1.6
+Description: Wikimedia Backend Search
+ Implementation of Lucene that handles wiki
+ search indexing and serving of search results.
+ Original code by rainman-sr

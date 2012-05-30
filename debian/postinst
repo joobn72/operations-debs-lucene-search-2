@@ -1,0 +1,7 @@
+#!/bin/sh
+if ! getent passwd lsearch > /dev/null; then
+        groupadd -r search
+        useradd -r -d/a -c'lucene search daemon' -gsearch -s/sbin/nologin lsearch
+fi
+
+#DEBHELPER#

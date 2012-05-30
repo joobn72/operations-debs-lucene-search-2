@@ -1,0 +1,6 @@
+#!/usr/bin/make -f
+
+export JAVA_HOME=/usr/lib/jvm/j2sdk1.6-oracle
+export CLASSPATH=/usr/share/java/log4j-1.2.jar
+%:
+	dh $@ --with javahelper
