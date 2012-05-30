@@ -36,9 +36,10 @@ public class StartupManager {
 				Configuration.setConfigFile(args[++i]);
 			}
 		}
-		BooleanQuery.setMaxClauseCount(10000);
 		Configuration config = Configuration.open();
 		GlobalConfiguration global = GlobalConfiguration.getInstance();
+		int maxclause = config.getInt("Search","maxclause",4096);
+		BooleanQuery.setMaxClauseCount(maxclause);
 		// preload localizations
 		HashSet<String> langCodes = new HashSet<String>();
 		for(IndexId iid : global.getMyIndex())
