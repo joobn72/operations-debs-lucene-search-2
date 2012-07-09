@@ -57,5 +57,15 @@ visit:
   http://www.mediawiki.org/wiki/Extension:Lucene-search
 
 
+== Compiling ==
+=== logging ===
+lsearch supports logging query information to both Wikimedia's custom udp2log,
+as well as Facebook's scribe logger.  To build this package, you must have
+these dependendencies installed.
+
+  * [https://github.com/wmf-analytics/log4j-scribe-appender libscribe-log4j-java]
+  * [https://gerrit.wikimedia.org/r/gitweb?p=operations/debs/udp2log-log4j-java.git libudp2log-log4j-java]
+
+Prebuilt Ubuntu debs for libscribe-log4j-java can be found at https://github.com/wmf-analytics/scribe-debian
 
 

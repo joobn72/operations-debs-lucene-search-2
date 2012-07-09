@@ -1,3 +1,10 @@
+lucene-search-2 (2.1.4wm2) precise-wikimedia; urgency=low
+
+  * Obsoleted UDPLogger class in favor of standalone log4j Udp2logAppender.
+  * Removed logging from SearchEngine and placed in SearchDaemon in order to log stats about search results.
+
+ -- Andrew Otto <otto@wikimedia.org>  Wed, 9 Jul 2012 13:30:00 -0500
+
 lucene-search-2 (2.1.3wm2) precise-wikimedia; urgency=low
 
   * initial precise build

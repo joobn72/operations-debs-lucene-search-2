@@ -91,7 +91,7 @@ public class SearchDaemon extends HttpHandler {
 		dbname = paths[2];
 		searchterm = paths[3].trim();
 		
-		log.info(MessageFormat.format("query:{0} what:{1} dbname:{2} term:{3}",
+		log.debug(MessageFormat.format("query:{0} what:{1} dbname:{2} term:{3}",
 			new Object[] {rawUri, what, dbname, searchterm}));	
 		try{
 			long start = System.currentTimeMillis();
@@ -99,6 +99,10 @@ public class SearchDaemon extends HttpHandler {
 			HashMap query = new QueryStringMap(uri);
 			double version = getVersion(query);
 			SearchResults res = search.search(dbname,what,searchterm,query,version);
+
+			// log search request and result(s) to log4j.
+			logResults(dbname, searchterm, res);
+
 			contentType = "text/plain";
 			long delta = System.currentTimeMillis() - start;
 			// format:
@@ -293,6 +297,10 @@ public class SearchDaemon extends HttpHandler {
 	
 	/** URL-encoding */
 	private String encode(String text){
+		if (text == null)
+		{
+			return "";
+		}
 		try {
 			String s = URLEncoder.encode(text, "UTF-8");
 			return s.replaceAll("\\+","%20");
@@ -443,6 +451,45 @@ public class SearchDaemon extends HttpHandler {
 		} catch(Exception e){
 			log.error("Error sending prefix result line (" + namespace + " " + title +"): "+e.getMessage(),e);
 		}
+	}
+
+
+	/**
+	 * Logs search and the first search result.
+	 *
+	 * @param String dbname
+	 * @param String searchterm
+	 * @param SearchResults res
+	 */
+	protected void logResults(String dbname, String searchterm, SearchResults res) {
+		// log the top result of this search query
+		String resultScore            = null;
+		String resultInterwiki        = null;
+		String resultNamespace        = null;
+		String resultNamespaceTextual = null;
+		String resultTitle            = null;
+		
+		ResultSet resultSet = null;
+		if ( res != null && res.getResults() != null && res.getResults().size() > 0 ) {
+			resultSet              = res.getResults().get(0);
+
+			resultScore            = Double.toString(resultSet.getScore());
+			resultInterwiki        = encode(resultSet.getInterwiki());
+			resultNamespace        = resultSet.getNamespace();
+			resultNamespaceTextual = encode(resultSet.getNamespaceTextual());
+			resultTitle            = encodeTitle(resultSet.getTitle());
+		}
+
+		log.info(String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
+			(dbname                 == null || dbname.isEmpty())                 ? "-" : dbname,
+			(searchterm             == null || searchterm.isEmpty())             ? "-" : encode(searchterm),
+			res.getResults().size(),
+			(resultScore            == null || searchterm.isEmpty())             ? "-" : resultScore,
+			(resultInterwiki        == null || resultInterwiki.isEmpty())        ? "-" : resultInterwiki,
+			(resultNamespace        == null || resultNamespace.isEmpty())        ? "-" : resultNamespace,
+			(resultNamespaceTextual == null || resultNamespaceTextual.isEmpty()) ? "-" : encode(resultNamespaceTextual),
+			(resultTitle            == null || resultTitle.isEmpty())            ? "-" : encodeTitle(resultTitle)
+		));
 	}
 	
 }

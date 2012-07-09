@@ -33,10 +33,9 @@
 				<attribute name="Main-Class" value="org.wikimedia.lsearch.config.StartupManager"/>
 				<attribute name="Class-Path" value="${jar.name} lib/xmlrpc-common-3.0.jar
 								    lib/xmlrpc-client-3.0.jar lib/xmlrpc-server-3.0.jar
-								    lib/commons-logging-1.1.jar lib/ws-commons-util-1.0.1.jar
-								    lib/log4j-1.2.14.jar lib/lucene-core-2.3.jar
+								    lib/ws-commons-util-1.0.1.jar lib/lucene-core-2.3.jar
 								    lib/lucene-analyzers.jar lib/snowball.jar lib/mwdumper.jar
-								    lib/mysql-connector-java-3.0.17-ga-bin.jar"/>
+								    lib/mysql-connector-java-3.0.17-ga-bin.jar /usr/share/java/commons-logging.jar /usr/share/java/scribe-log4j.jar /usr/share/java/log4j-1.2.jar /usr/share/java/libthrift.jar /usr/share/java/libscribe.jar /usr/share/java/slf4j-api.jar /usr/share/java/slf4j-log4j12.jar /usr/share/java/libfb303.jar /usr/share/java/udp2log-log4j.jar"/>
 			</manifest>
 			<zipfileset dir="${dest.dir}" prefix="">
 				<include name="org/**"/>
@@ -55,14 +54,22 @@
 			<zipfileset src="lib/xmlrpc-common-3.0.jar" />
 			<zipfileset src="lib/xmlrpc-client-3.0.jar" />
 			<zipfileset src="lib/xmlrpc-server-3.0.jar" />
-			<zipfileset src="lib/commons-logging-1.1.jar" />
 			<zipfileset src="lib/ws-commons-util-1.0.1.jar" />
-			<zipfileset src="lib/log4j-1.2.14.jar" />
 			<zipfileset src="lib/lucene-core-2.3.jar" />
 			<zipfileset src="lib/lucene-analyzers.jar" />
 			<zipfileset src="lib/snowball.jar" />
 			<zipfileset src="lib/mwdumper.jar" />
 			<zipfileset src="lib/mysql-connector-java-3.0.17-ga-bin.jar" />
+			<zipfileset src="/usr/share/java/commons-logging.jar" />
+			<zipfileset src="/usr/share/java/log4j-1.2.jar" />
+			<zipfileset src="/usr/share/java/slf4j-api.jar" />
+			<zipfileset src="/usr/share/java/slf4j-log4j12.jar" />
+			<zipfileset src="/usr/share/java/libthrift.jar" />
+			<zipfileset src="/usr/share/java/libfb303.jar" />
+			<zipfileset src="/usr/share/java/libscribe.jar" />
+			<zipfileset src="/usr/share/java/scribe-log4j.jar" />
+			<zipfileset src="/usr/share/java/udp2log-log4j.jar" />
+
 
 			<fileset dir="resources" includes="*/**" />
 		</jar>
@@ -71,16 +78,16 @@
 
 	<target name="build" description="Compile classes">
 		<mkdir dir="${dest.dir}"/>
-                <javac srcdir="${src.dir}/org/" debug="on" encoding="UTF-8" includes="**/*.java" destdir="${dest.dir}/">
+		<javac srcdir="${src.dir}/org/" debug="on" encoding="UTF-8" includes="**/*.java" destdir="${dest.dir}/">
 			<classpath refid="classpath"/>
 		</javac>
 	</target>
 
-        <target name="clean-dist" description="Clean up the dist dir">
+	<target name="clean-dist" description="Clean up the dist dir">
 		<mkdir dir="${dist.dir}"/>
 		<delete file="${dist.dir}/*.tar"/>
 		<delete file="${dist.dir}/*.tar.gz"/>
-        </target>
+	</target>
 
 	<target name="pack" depends="clean-dist" description="Make tar.gz distribution">
 		<tar tarfile="${dist.dir}/${pack.name}-${version}.tar">

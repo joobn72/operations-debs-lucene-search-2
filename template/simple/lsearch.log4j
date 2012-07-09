@@ -1,9 +1,25 @@
 # Set root logger level and its only appender to A1.
-log4j.rootLogger=INFO, A1
+log4j.rootLogger=INFO, scribe, udp2log, stdout
 
-# A1 is set to be a ConsoleAppender.
-log4j.appender.A1=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.Threshold=WARN
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%m%n
 
-# A1 uses PatternLayout.
-log4j.appender.A1.layout=org.apache.log4j.PatternLayout
-log4j.appender.A1.layout.ConversionPattern=%-4r [%t] %-5p %c %x - %m%n
+log4j.appender.scribe=org.apache.log4j.net.ScribeAppender
+log4j.appender.scribe.category=lucene
+log4j.appender.scribe.remoteHost=127.0.0.1
+log4j.appender.scribe.layout=org.apache.log4j.PatternLayout
+log4j.appender.scribe.layout.ConversionPattern=%d{yyyy-MM-dd'T'HH:mm:ss'Z'}\t%m
+
+
+log4j.appender.udp2log=org.wikimedia.log4j.Udp2LogAppender
+log4j.appender.udp2log.remoteHost=127.0.0.1
+log4j.appender.udp2log.remotePort=51234
+log4j.appender.udp2log.layout=org.apache.log4j.PatternLayout
+log4j.appender.udp2log.layout.ConversionPattern=%d{yyyy-MM-dd'T'HH:mm:ss'Z'}\t%m%n
+log4j.appender.udp2log.errorhandler.logger.appender-ref=stdout
+
+log4j.logger.org.wikimedia.lsearch.search.SearchEngine=WARN
+log4j.logger.org.wikimedia.lsearch.spell.Suggest=WARN
+

@@ -1,6 +1,7 @@
 #!/usr/bin/make -f
 
-export JAVA_HOME=/usr/lib/jvm/j2sdk1.6-oracle
-export CLASSPATH=/usr/share/java/log4j-1.2.jar
+# Get the java home directory for the version of java we are using
+JAVA_HOME := $(shell /usr/sbin/update-java-alternatives --list | cut -d ' ' -f 3)
+
 %:
 	dh $@ --with javahelper

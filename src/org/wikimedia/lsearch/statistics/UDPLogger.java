@@ -1,3 +1,11 @@
+/**
+ * This class is obsolete and should not be used.
+ * Instead, use log4j Udp2LogAppender, located in 
+ * debian package libudp2log-log4j-appender.  Source can be found at found
+ * at https://gerrit.wikimedia.org/r/gitweb?p=operations/debs/udp2log-log4j-java.git
+ */
+
+
 package org.wikimedia.lsearch.statistics;
 
 import java.io.IOException;

@@ -56,7 +56,6 @@ import org.wikimedia.lsearch.spell.Suggest;
 import org.wikimedia.lsearch.spell.SuggestQuery;
 import org.wikimedia.lsearch.spell.SuggestResult;
 import org.wikimedia.lsearch.spell.SuggestSimilar;
-import org.wikimedia.lsearch.statistics.UDPLogger;
 import org.wikimedia.lsearch.util.Localization;
 
 /**
@@ -86,7 +85,6 @@ public class SearchEngine {
 	protected static GlobalConfiguration global = null;
 	protected static Configuration config = null;
 	protected static SearcherCache cache = null;
-	protected static UDPLogger udpLogger = null;
 	/** dbname -> ns_string -> ns_index */
 	protected static Hashtable<String,Hashtable<String,Integer>> dbNamespaces = new Hashtable<String,Hashtable<String,Integer>>();
 	/** dbname -> ns_index -> ns_string */
@@ -102,8 +100,6 @@ public class SearchEngine {
 		}	
 		if(cache == null)
 			cache = SearcherCache.getInstance();
-		if(udpLogger == null)
-			udpLogger = UDPLogger.getInstance();
 		
 		// timelimit = config.getInt("Search","timelimit",5000);
 	}
@@ -628,9 +624,6 @@ public class SearchEngine {
 			res.setErrorMsg("Empty search");
 			return res;
 		}
-		
-		// log at the very beggining this query
-		udpLogger.log(iid.getDBname(), searchterm);
 		
 		// check if request is explicitely on one field
 		if(searchAllFromRequest && !(fields.size()==1 && !fields.contains(nsDefault))){

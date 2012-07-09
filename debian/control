@@ -2,12 +2,12 @@ Source: lucene-search-2
 Section: web
 Priority: optional
 Maintainer: Peter Youngmeister <py@wikimedia.org>
-Build-Depends: oracle-j2sdk1.6, ant, debhelper (>= 7.0.50~), javahelper (>=0.25)
+Build-Depends: default-jdk | sun-java6-jdk | oracle-j2sdk1.6, ant, debhelper (>= 7.0.50~), javahelper (>=0.25), libcommons-logging-java, liblog4j1.2-java, libslf4j-java, libthrift-java, libfb303-java, libscribe-java, libscribe-log4j-java, libudp2log-log4j-java
 Standards-Version: 3.8.4
 
 Package: lucene-search-2
 Architecture: all
-Depends: oracle-j2sdk1.6
+Depends: default-jdk | sun-java6-jdk | oracle-j2sdk1.6
 Description: Wikimedia Backend Search
  Implementation of Lucene that handles wiki
  search indexing and serving of search results.
