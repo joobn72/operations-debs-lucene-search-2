@@ -19,9 +19,4 @@
 	<classpathentry kind="lib" path="/usr/share/java/slf4j-api.jar"/>
 	<classpathentry kind="lib" path="/usr/share/java/slf4j-log4j12.jar"/>
 	<classpathentry kind="lib" path="/usr/share/java/commons-logging.jar"/>
-	<classpathentry kind="lib" path="/usr/share/java/libthrift.jar"/>
-	<classpathentry kind="lib" path="/usr/share/java/libfb303.jar"/>
-	<classpathentry kind="lib" path="/usr/share/java/libscribe.jar"/>
-	<classpathentry kind="lib" path="/usr/share/java/scribe-log4j.jar"/>
-	<classpathentry kind="lib" path="/usr/share/java/udp2log-log4j.jar"/>
 </classpath>

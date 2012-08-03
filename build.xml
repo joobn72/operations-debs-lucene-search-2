@@ -35,7 +35,7 @@
 								    lib/xmlrpc-client-3.0.jar lib/xmlrpc-server-3.0.jar
 								    lib/ws-commons-util-1.0.1.jar lib/lucene-core-2.3.jar
 								    lib/lucene-analyzers.jar lib/snowball.jar lib/mwdumper.jar
-								    lib/mysql-connector-java-3.0.17-ga-bin.jar /usr/share/java/commons-logging.jar /usr/share/java/scribe-log4j.jar /usr/share/java/log4j-1.2.jar /usr/share/java/libthrift.jar /usr/share/java/libscribe.jar /usr/share/java/slf4j-api.jar /usr/share/java/slf4j-log4j12.jar /usr/share/java/libfb303.jar /usr/share/java/udp2log-log4j.jar"/>
+								    lib/mysql-connector-java-3.0.17-ga-bin.jar /usr/share/java/commons-logging.jar /usr/share/java/log4j-1.2.jar /usr/share/java/slf4j-api.jar /usr/share/java/slf4j-log4j12.jar"/>
 			</manifest>
 			<zipfileset dir="${dest.dir}" prefix="">
 				<include name="org/**"/>
@@ -64,12 +64,6 @@
 			<zipfileset src="/usr/share/java/log4j-1.2.jar" />
 			<zipfileset src="/usr/share/java/slf4j-api.jar" />
 			<zipfileset src="/usr/share/java/slf4j-log4j12.jar" />
-			<zipfileset src="/usr/share/java/libthrift.jar" />
-			<zipfileset src="/usr/share/java/libfb303.jar" />
-			<zipfileset src="/usr/share/java/libscribe.jar" />
-			<zipfileset src="/usr/share/java/scribe-log4j.jar" />
-			<zipfileset src="/usr/share/java/udp2log-log4j.jar" />
-
 
 			<fileset dir="resources" includes="*/**" />
 		</jar>

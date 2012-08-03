@@ -26,7 +26,7 @@ case "$1" in
                 # Increase FD limit
                 ulimit -n 65536
                 # Run the daemon
-                if start-stop-daemon --start --quiet --background --user lsearch --chuid lsearch --pidfile $pid --make-pidfile --exec /usr/bin/java -- -Xmx20000m -Djava.rmi.server.codebase=file://$BINDIR/LuceneSearch.jar -Djava.rmi.server.hostname=$HOSTNAME -jar $BINDIR/LuceneSearch.jar
+                if start-stop-daemon --start --quiet --background --user lsearch --chuid lsearch --pidfile $pid --make-pidfile --exec /usr/bin/java -- -Xmx20000m -Djava.rmi.server.codebase=file://$BINDIR/LuceneSearch.jar -Djava.rmi.server.hostname=$HOSTNAME -classpath $CLASSPATH:$BINDIR/LuceneSearch.jar org.wikimedia.lsearch.config.StartupManager
                 then
                         rc=0
                         sleep 1

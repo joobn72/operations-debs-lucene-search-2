@@ -1,3 +1,10 @@
 #!/bin/bash
 jardir=`dirname $0` # put your jar dir here!
-java -Djava.rmi.server.codebase=file://$jardir/LuceneSearch.jar -Djava.rmi.server.hostname=$HOSTNAME -jar $jardir/LuceneSearch.jar $*
+
+# Note that -classpath passes in the $CLASSPATH environment variable.
+# If you are using any custom log4j appenders, be sure to include those jars
+# in $CLASSPATH.
+#
+# Example:  Using the udp2log log4j appender (https://gerrit.wikimedia.org/r/gitweb?p=operations/debs/udp2log-log4j-java.git;a=summary):
+#   export CLASSPATH=$CLASSPATH:/usr/share/java/udp2log-log4j.jar && ./lsearchd
+java -Djava.rmi.server.codebase=file://$jardir/LuceneSearch.jar -Djava.rmi.server.hostname=$HOSTNAME -classpath $CLASSPATH:$jardir/LuceneSearch.jar org.wikimedia.lsearch.config.StartupManager $*
