@@ -480,7 +480,7 @@ public class SearchDaemon extends HttpHandler {
 			resultTitle            = encodeTitle(resultSet.getTitle());
 		}
 
-		log.info(String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
+		log.info(String.format("SearchResults:%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
 			(dbname                 == null || dbname.isEmpty())                 ? "-" : dbname,
 			(searchterm             == null || searchterm.isEmpty())             ? "-" : encode(searchterm),
 			res.getResults().size(),
