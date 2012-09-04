@@ -297,10 +297,6 @@ public class SearchDaemon extends HttpHandler {
 	
 	/** URL-encoding */
 	private String encode(String text){
-		if (text == null)
-		{
-			return "";
-		}
 		try {
 			String s = URLEncoder.encode(text, "UTF-8");
 			return s.replaceAll("\\+","%20");
@@ -474,9 +470,9 @@ public class SearchDaemon extends HttpHandler {
 			resultSet              = res.getResults().get(0);
 
 			resultScore            = Double.toString(resultSet.getScore());
-			resultInterwiki        = encode(resultSet.getInterwiki());
+			resultInterwiki        = resultSet.getInterwiki();
 			resultNamespace        = resultSet.getNamespace();
-			resultNamespaceTextual = encode(resultSet.getNamespaceTextual());
+			resultNamespaceTextual = resultSet.getNamespaceTextual();
 			resultTitle            = encodeTitle(resultSet.getTitle());
 		}
 
@@ -485,7 +481,7 @@ public class SearchDaemon extends HttpHandler {
 			(searchterm             == null || searchterm.isEmpty())             ? "-" : encode(searchterm),
 			res.getResults().size(),
 			(resultScore            == null || searchterm.isEmpty())             ? "-" : resultScore,
-			(resultInterwiki        == null || resultInterwiki.isEmpty())        ? "-" : resultInterwiki,
+			(resultInterwiki        == null || resultInterwiki.isEmpty())        ? "-" : encode(resultInterwiki),
 			(resultNamespace        == null || resultNamespace.isEmpty())        ? "-" : resultNamespace,
 			(resultNamespaceTextual == null || resultNamespaceTextual.isEmpty()) ? "-" : encode(resultNamespaceTextual),
 			(resultTitle            == null || resultTitle.isEmpty())            ? "-" : encodeTitle(resultTitle)
