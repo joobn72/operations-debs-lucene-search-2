@@ -152,7 +152,11 @@ abstract public class HttpHandler extends Thread {
 		headers = new HashMap();
 
 		// parse first line		
-		String request = readInputLine();		
+		String request = readInputLine();
+		if (request == null) {
+		    log.warn("HttpHandler cannot handle a null search request.");
+		    return;
+		}
 		String[] reqParts = request.split(" ");
 
 		method = reqParts[0];
