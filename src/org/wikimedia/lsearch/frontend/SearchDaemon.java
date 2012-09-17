@@ -15,9 +15,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Map.Entry;
-
-import javax.xml.bind.annotation.XmlElementDecl.GLOBAL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.wikimedia.lsearch.beans.LocalIndex;
 import org.wikimedia.lsearch.beans.ResultSet;
@@ -35,7 +34,6 @@ import org.wikimedia.lsearch.search.SearchEngine;
 import org.wikimedia.lsearch.search.SearcherCache;
 import org.wikimedia.lsearch.search.UpdateThread;
 import org.wikimedia.lsearch.search.Warmup;
-import org.wikimedia.lsearch.search.WikiSearcher;
 import org.wikimedia.lsearch.spell.SuggestQuery;
 import org.wikimedia.lsearch.util.FSUtils;
 import org.wikimedia.lsearch.util.QueryStringMap;
@@ -54,6 +52,13 @@ public class SearchDaemon extends HttpHandler {
 	/** Client-supplied database we should operate on */
 	String dbname;
 
+	/** Regexes to filter out search terms that contain privacy sensitive information*/
+	static final Pattern[] logResultFilterPatterns = {
+			Pattern.compile("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b"), // Email address
+			Pattern.compile("\\b(?:\\d[ -]*?){13,16}\\b"), 				      // Credit card number
+			Pattern.compile("\\b\\d{3}-\\d{2}-\\d{4}\\b"), 					  // US social security number
+	};
+	
 	/** Current compatibility version */
 	public static final double CURRENT_VERSION = 2.1;
 
@@ -101,7 +106,9 @@ public class SearchDaemon extends HttpHandler {
 			SearchResults res = search.search(dbname,what,searchterm,query,version);
 
 			// log search request and result(s) to log4j.
-			logResults(dbname, searchterm, res);
+			if (!isSensitiveSearchterm(searchterm)) {
+				logResults(dbname, searchterm, res);
+			}
 
 			contentType = "text/plain";
 			long delta = System.currentTimeMillis() - start;
@@ -449,6 +456,21 @@ public class SearchDaemon extends HttpHandler {
 		}
 	}
 
+	/**
+	 * Determine whether searchterm either contains a credit card number, 
+	 * an email address or a social security number.
+	 * @param searchterm
+	 * @return boolean True if the searchterm is sensitive, false otherwise.
+	 */
+	private boolean isSensitiveSearchterm(String searchterm) {
+		for (int i=0; i < logResultFilterPatterns.length; i++){
+			Matcher match = logResultFilterPatterns[i].matcher(searchterm);
+			if (match.matches()) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Logs search and the first search result.
@@ -464,7 +486,7 @@ public class SearchDaemon extends HttpHandler {
 		String resultNamespace        = null;
 		String resultNamespaceTextual = null;
 		String resultTitle            = null;
-		
+	
 		ResultSet resultSet = null;
 		if ( res != null && res.getResults() != null && res.getResults().size() > 0 ) {
 			resultSet              = res.getResults().get(0);
@@ -483,9 +505,7 @@ public class SearchDaemon extends HttpHandler {
 			(resultScore            == null || searchterm.isEmpty())             ? "-" : resultScore,
 			(resultInterwiki        == null || resultInterwiki.isEmpty())        ? "-" : encode(resultInterwiki),
 			(resultNamespace        == null || resultNamespace.isEmpty())        ? "-" : resultNamespace,
-			(resultNamespaceTextual == null || resultNamespaceTextual.isEmpty()) ? "-" : encode(resultNamespaceTextual),
-			(resultTitle            == null || resultTitle.isEmpty())            ? "-" : encodeTitle(resultTitle)
+			(resultNamespaceTextual == null || resultNamespaceTextual.isEmpty()) ? "-" : encode(resultNamespaceTextual),				(resultTitle            == null || resultTitle.isEmpty())            ? "-" : encodeTitle(resultTitle)
 		));
 	}
-	
 }
