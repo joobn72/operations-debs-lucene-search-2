@@ -25,7 +25,9 @@ public class RMIServer {
 	public static void register(Remote engine, String name){
 		try {
          Registry registry = LocateRegistry.getRegistry();
-         registry.rebind(name, UnicastRemoteObject.exportObject(engine, 0));
+		 CustomSocketFactory csf = CustomSocketFactory.getInstance();
+		 registry.rebind(name,
+				UnicastRemoteObject.exportObject(engine, 0, csf, csf));
          log.info(name+" bound");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -110,7 +112,8 @@ public class RMIServer {
 	
 	public static void createRegistry(){
 		try {
-			 java.rmi.registry.LocateRegistry.createRegistry(1099);
+			 CustomSocketFactory csf = CustomSocketFactory.getInstance();
+			 java.rmi.registry.LocateRegistry.createRegistry(1099, csf, csf);
 			 System.out.println("RMI registry started.");
 		  } catch (Exception e) {
 			 // probably already running

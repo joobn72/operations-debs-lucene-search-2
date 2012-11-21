@@ -131,6 +131,11 @@ public class GlobalConfiguration {
 	/** Sections in lsearch-config.conf */
 	protected static enum Section { DATABASE, INDEX, SEARCH, INDEXPATH, NAMESPACE_PREFIX, OAI, DATABASE_GROUP, NAMESPACE_BOOST };
 
+	/** The timeout for RMI reads, in milliseconds */
+	protected int rmiReadTimeout = 10000;
+
+	/** The timeout for RMI connect operations, in milliseconds */
+	protected int rmiConnectTimeout = 1000;
 
 	/**
 	 * Use this function to override the hosts IP address which
@@ -433,6 +438,11 @@ public class GlobalConfiguration {
 					this.commonsWiki = globalProperties.getProperty("Commons.wiki");
 					this.maxSearchOffset = Integer.parseInt(globalProperties.getProperty("Search.maxoffset", "100000"));
 					this.maxSearchLimit = Integer.parseInt(globalProperties.getProperty("Search.maxlimit", "1000"));
+					this.rmiConnectTimeout = (int) Math.round(Double.parseDouble(
+							globalProperties.getProperty("Search.rmiConnectTimeout", "1")) * 1000);
+					this.rmiReadTimeout = (int) Math.round(Double.parseDouble(
+							globalProperties.getProperty("Search.rmiReadTimeout", "10")) * 1000);
+
 					// try reading intialisesettings
 					String initset = globalProperties.getProperty("WMF.InitialiseSettings");
 					if(initset != null)
@@ -1580,6 +1590,11 @@ public class GlobalConfiguration {
 		return indexPath;
 	}
 
+	public int getRMIConnectTimeout() {
+		return rmiConnectTimeout;
+	}
 
-
+	public int getRMIReadTimeout() {
+		return rmiReadTimeout;
+	}
 }

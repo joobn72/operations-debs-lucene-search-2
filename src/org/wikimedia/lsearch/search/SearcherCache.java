@@ -31,6 +31,7 @@ import org.wikimedia.lsearch.config.IndexRegistry;
 import org.wikimedia.lsearch.index.WikiSimilarity;
 import org.wikimedia.lsearch.interoperability.RMIMessengerClient;
 import org.wikimedia.lsearch.interoperability.RMIServer;
+import org.wikimedia.lsearch.interoperability.CustomSocketFactory;
 
 
 public class SearcherCache {
@@ -180,7 +181,8 @@ public class SearcherCache {
 		int index = 0;
 		
 		RemoteSearcherPool(IndexId iid, String host, int poolsize) throws IOException, NotBoundException {
-			Registry registry = LocateRegistry.getRegistry(host);
+			Registry registry = LocateRegistry.getRegistry(host, 1099, 
+					CustomSocketFactory.getInstance());
 			this.iid = iid;
 			String name = "RemoteSearchable<"+iid+">";
 			this.searchers = new CachedSearchable[poolsize];

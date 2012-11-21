@@ -129,7 +129,7 @@ public class RMIMessengerClient {
 			
 			Registry registry = registryCache.get(host);
 			if(registry == null){
-				registry = LocateRegistry.getRegistry(host);				
+				registry = LocateRegistry.getRegistry(host, 1099, CustomSocketFactory.getInstance());
 				registryCache.put(host,registry);
 			}
 			r = (RMIMessenger) registry.lookup("RMIMessenger");
