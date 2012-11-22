@@ -257,7 +257,7 @@ public class RMIMessengerClient {
 			return r.highlight(hits,dbrole,terms,df,maxDoc,words,exactCase,sortByPhrases,alwaysIncludeFirst);
 		} catch(Exception e){
 			log.warn("Exception highligthing words="+words+" on host="+host, e);
-			recheckRemote(dbrole,host);			
+			recheckRemote(IndexId.get(dbrole).getHighlight(),host);			
 			return new Highlight.ResultSet(new HashMap<String,HighlightResult>(),new HashSet<String>(),new HashSet<String>(),false,0,new HashSet<String>(),false);
 		}		
 	}
@@ -289,7 +289,7 @@ public class RMIMessengerClient {
 				return null;
 			}
 			e.printStackTrace();
-			recheckRemote(dbrole,host);
+			recheckRemote(IndexId.get(dbrole).getSpell(), host);
 			log.warn("Error invoking suggest() on "+host+" : "+e.getMessage(),e);
 			return null;
 		}		
@@ -299,7 +299,7 @@ public class RMIMessengerClient {
 			RMIMessenger r = messengerFromCache(host);
 			return r.getFuzzy(dbrole,word,nsf);
 		} catch(Exception e){
-			recheckRemote(dbrole,host);
+			recheckRemote(IndexId.get(dbrole).getSpell(),host);
 			e.printStackTrace();
 			log.warn("Error invoking getFuzzy() on "+host+" : "+e.getMessage(),e);
 			return new ArrayList<SuggestResult>();
@@ -314,7 +314,7 @@ public class RMIMessengerClient {
 		} catch(Exception e){
 			e.printStackTrace();
 			log.warn("Error invoking searchRelated() on "+host+" : "+e.getMessage(),e);
-			recheckRemote(dbrole,host);
+			recheckRemote(IndexId.get(dbrole).getRelated(),host);
 			SearchResults res = new SearchResults();
 			res.setErrorMsg("Error searching related index: "+e.getMessage());
 			return res;
@@ -340,7 +340,7 @@ public class RMIMessengerClient {
 			r = messengerFromCache(host);
 			return r.searchPrefix(dbrole,searchterm,limit,nsf);
 		} catch (Exception e) {
-			recheckRemote(dbrole,host);
+			recheckRemote(IndexId.get(dbrole).getPrefix(),host);
 			e.printStackTrace();
 			SearchResults res = new SearchResults();
 			res.setErrorMsg("Error search prefix index: "+e.getMessage());
@@ -354,7 +354,7 @@ public class RMIMessengerClient {
 			r = messengerFromCache(host);
 			return r.similar(dbrole,title,nsf,maxdist);
 		} catch (Exception e) {
-			recheckRemote(dbrole,host);
+			recheckRemote(IndexId.get(dbrole).getTitleNgram(),host);
 			e.printStackTrace();
 			log.error("Messenger not bound: "+e.getMessage(),e);
 			return new ArrayList<String>();

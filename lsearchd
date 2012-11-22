@@ -7,4 +7,4 @@ jardir=`dirname $0` # put your jar dir here!
 #
 # Example:  Using the udp2log log4j appender (https://gerrit.wikimedia.org/r/gitweb?p=operations/debs/udp2log-log4j-java.git;a=summary):
 #   export CLASSPATH=$CLASSPATH:/usr/share/java/udp2log-log4j.jar && ./lsearchd
-java -Djava.rmi.server.codebase=file://$jardir/LuceneSearch.jar -Djava.rmi.server.hostname=$HOSTNAME -classpath $CLASSPATH:$jardir/LuceneSearch.jar org.wikimedia.lsearch.config.StartupManager $*
+java -Dsun.rmi.transport.tcp.handshakeTimeout=10000 -Djava.rmi.server.codebase=file://$jardir/LuceneSearch.jar -Djava.rmi.server.hostname=$HOSTNAME -classpath $CLASSPATH:$jardir/LuceneSearch.jar org.wikimedia.lsearch.config.StartupManager $*
