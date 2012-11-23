@@ -1,3 +1,11 @@
+lucene-search-2 (2.1.5wm1) precise-wikimedia; urgency=low
+
+  * Added configurable RMI timeouts.
+  * Fixed a bug whereby any exception in RMI would cause the relevant server
+    to be permanently depooled.
+
+ -- Tim Starling <tstarling@wikimedia.org>  Fri, 23 Nov 2012 14:20:17 +1100
+
 lucene-search-2 (2.1.4wm3) precise-wikimedia; urgency=low
 
   * Added Diederik's credit card/ssn/email address scrubbing patch
