@@ -257,7 +257,7 @@ public class RMIMessengerClient {
 			return r.highlight(hits,dbrole,terms,df,maxDoc,words,exactCase,sortByPhrases,alwaysIncludeFirst);
 		} catch(Exception e){
 			log.warn("Exception highligthing words="+words+" on host="+host, e);
-			recheckRemote(IndexId.get(dbrole).getHighlight(),host);			
+			recheckRemote(IndexId.get(dbrole).getHighlight(),host);
 			return new Highlight.ResultSet(new HashMap<String,HighlightResult>(),new HashSet<String>(),new HashSet<String>(),false,0,new HashSet<String>(),false);
 		}		
 	}
