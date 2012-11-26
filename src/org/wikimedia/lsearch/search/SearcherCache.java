@@ -198,7 +198,7 @@ public class SearcherCache {
 			return searchers[index++];
 		}	
 	}
-	
+
 	/** dbrole -> host -> remote pool */
 	protected Hashtable<String,Hashtable<String,RemoteSearcherPool>> remoteCache = new Hashtable<String,Hashtable<String,RemoteSearcherPool>>();	
 	/** dbrole -> local pool */
