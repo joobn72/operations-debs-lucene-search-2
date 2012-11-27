@@ -45,14 +45,13 @@ case "$1" in
                 ;;
         stop)   
                 log_daemon_msg "Stopping $SERVICE_NAME"
-                start-stop-daemon --stop --quiet --oknodo --pidfile $pid
+                start-stop-daemon --stop --quiet --oknodo --pidfile $pid --retry 10
                 log_end_msg $?
                 rm -f /var/run/lsearchd.pid
                 echo
                 ;;
         restart)
                 $0 stop
-                sleep 5s
                 $0 start
                 ;;
         status)
