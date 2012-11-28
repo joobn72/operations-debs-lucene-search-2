@@ -1,3 +1,9 @@
+lucene-search-2 (2.1.5wm2) precise-wikimedia; urgency=low
+
+  * Fixed init script bug
+
+ -- Tim Starling <tstarling@wikimedia.org>  Tue, 27 Nov 2012 15:01:47 +1100
+
 lucene-search-2 (2.1.5wm1) precise-wikimedia; urgency=low
 
   * Added configurable RMI timeouts.
