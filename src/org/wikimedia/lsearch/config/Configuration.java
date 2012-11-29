@@ -104,7 +104,7 @@ public class Configuration {
 			BasicConfigurator.configure();
 			Logger.getRootLogger().setLevel(Level.INFO);
 		} else {
-			PropertyConfigurator.configure(logconfig);
+			PropertyConfigurator.configureAndWatch(logconfig, 5);
 		}
 		
 		// open the global configuration

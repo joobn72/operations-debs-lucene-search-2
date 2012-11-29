@@ -1,3 +1,12 @@
+lucene-search-2 (2.1.6wm1) precise-wikimedia; urgency=low
+
+  * Moved RMI timeouts to the local configuration file.
+  * Increased default RMI read timeout to 2 hours.
+  * Monitor the log4j configuration so that it can be changed without
+    restarting the daemon.
+
+ -- Tim Starling <tstarling@wikimedia.org>  Fri, 30 Nov 2012 10:40:38 +1100
+
 lucene-search-2 (2.1.5wm2) precise-wikimedia; urgency=low
 
   * Fixed init script bug

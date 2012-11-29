@@ -8,7 +8,7 @@ import java.net.InetSocketAddress;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 
-import org.wikimedia.lsearch.config.GlobalConfiguration;
+import org.wikimedia.lsearch.config.Configuration;
 
 public class CustomSocketFactory
 	implements RMIClientSocketFactory, RMIServerSocketFactory, Serializable 
@@ -25,12 +25,20 @@ public class CustomSocketFactory
 		return instance;
 	}
 
+	/**
+	 * Get the connect timeout in milliseconds
+	 */
 	protected int getConnectTimeout() {
-		return GlobalConfiguration.getInstance().getRMIConnectTimeout();
+		return (int) Math.round(
+			Configuration.open().getDouble("Search", "rmiConnectTimeout", 1.) * 1000);
 	}
 
+	/**
+	 * Get the read timeout in milliseconds
+	 */
 	protected int getReadTimeout() {
-		return GlobalConfiguration.getInstance().getRMIReadTimeout();
+		return (int) Math.round(
+			Configuration.open().getDouble("Search", "rmiReadTimeout", 7200.) * 1000);
 	}
 
 	public Socket createSocket(String host, int port) throws IOException {
