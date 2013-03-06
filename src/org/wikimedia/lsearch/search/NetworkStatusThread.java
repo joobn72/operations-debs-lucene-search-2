@@ -32,7 +32,8 @@ public class NetworkStatusThread extends Thread {
 	protected RMIMessenger messenger;
 	protected ArrayList<SearchHost> indexUpdates;
 	protected SearcherCache cache;
-	
+	protected String nullHost;
+
 	protected static NetworkStatusThread instance = null;
 	
 	protected NetworkStatusThread(){
@@ -40,6 +41,8 @@ public class NetworkStatusThread extends Thread {
 		pingInterval = config.getInt("Search","checkinterval",10) * 1000;
 		indexUpdates = new ArrayList<SearchHost>();
 		cache = SearcherCache.getInstance();
+		nullHost = config.getString( "Search", "nullHost", "" );    // non-existent host
+		log.info( "nullHost = " + nullHost );
 	}
 	
 	@Override
@@ -67,14 +70,13 @@ public class NetworkStatusThread extends Thread {
 	
 	/** Check dead hosts, and flush caches is host is alive */
 	protected void pingHosts() {
-		HashSet<String> noRetryHosts = new HashSet<String>();
 		HashSet<SearchHost> deadPool = new HashSet<SearchHost>();
 		deadPool.addAll(cache.getDeadPools());
 		RMIMessengerClient messenger = new RMIMessengerClient();
 		
 		log.debug("Pinging remote hosts to see if they are up");
 		for(SearchHost sh : deadPool){
-			if(noRetryHosts.contains(sh.host)){
+			if ( nullHost.equals( sh.host ) ) {
 				continue;
 			}
 			try {
@@ -85,7 +87,6 @@ public class NetworkStatusThread extends Thread {
 				}
 			} catch (RemoteException e) {
 				log.warn("Host "+sh.host+" for "+sh.iid+" still down.",e);
-				//noRetryHosts.add(sh.host);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

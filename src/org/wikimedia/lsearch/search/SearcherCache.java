@@ -233,6 +233,9 @@ public class SearcherCache {
 	/** Number of threads to use for initial deployment */
 	protected int initialDeploymentThreads = 1;
 	
+	/** non-existent host name */
+	protected String nullHost;
+
 	/** If there is local searcher always use that */
 	protected boolean forceLocal = true;
 	
@@ -428,6 +431,10 @@ public class SearcherCache {
 			
 			if(!initialized.contains(iid.toString())){
 				for(String host : iid.getSearchHosts()){
+					if ( nullHost.equals( host ) ) {
+						log.debug( String.format( "Skipping initializeRemote for nullHost = %s, iid %s", nullHost, iid ) );
+						continue;
+					}
 					if(!RMIMessengerClient.isLocal(host))
 						initializeRemote(iid,host);
 				}
@@ -644,6 +651,9 @@ public class SearcherCache {
 			log.info("Excluding hosts: "+excludedHosts);
 		}
 		initialDeploymentThreads = config.getInt("SearcherPool", "initThreads",1);
+
+		nullHost = config.getString( "Search", "nullHost", "" );    // non-existent host
+		log.info( "nullHost = " + nullHost );
 		
 		forceLocal = config.getBoolean("SearcherPool", "forceLocal", true);
 		
