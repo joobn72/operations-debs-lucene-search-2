@@ -4,11 +4,6 @@
  */
 package org.wikimedia.lsearch.frontend;
 
-import java.util.HashMap;
-
-import org.wikimedia.lsearch.beans.Title;
-import org.wikimedia.lsearch.config.Configuration;
-
 /**
  * RPC frontend to {@link IndexDaemon} using Apache XMLRPC package.
  * 

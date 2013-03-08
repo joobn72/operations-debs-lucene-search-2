@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.lucene.analysis.Token;
 import org.wikimedia.lsearch.analyzers.Alttitles;
 import org.wikimedia.lsearch.analyzers.CJKFilter;
 import org.wikimedia.lsearch.analyzers.ExtToken;

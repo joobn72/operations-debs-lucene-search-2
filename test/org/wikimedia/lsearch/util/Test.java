@@ -1,11 +1,8 @@
 package org.wikimedia.lsearch.util;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Formatter;
 import java.util.regex.Pattern;
 
-import org.apache.lucene.search.PrefixQuery;
 import org.wikimedia.lsearch.analyzers.WordNet;
 
 public class Test {

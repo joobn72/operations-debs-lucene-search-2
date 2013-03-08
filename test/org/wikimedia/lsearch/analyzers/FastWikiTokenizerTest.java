@@ -1,17 +1,11 @@
 package org.wikimedia.lsearch.analyzers;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
 
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.LowerCaseTokenizer;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
@@ -20,7 +14,6 @@ import org.wikimedia.lsearch.analyzers.FastWikiTokenizerEngine;
 import org.wikimedia.lsearch.analyzers.TokenizerOptions;
 import org.wikimedia.lsearch.config.Configuration;
 import org.wikimedia.lsearch.config.IndexId;
-import org.wikimedia.lsearch.index.WikiIndexModifier;
 import org.wikimedia.lsearch.test.WikiTestCase;
 
 public class FastWikiTokenizerTest extends WikiTestCase {

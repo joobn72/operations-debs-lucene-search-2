@@ -4,10 +4,7 @@
  */
 package org.wikimedia.lsearch.config;
 
-import java.io.IOException;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Properties;
@@ -18,8 +15,6 @@ import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.search.NamespaceFilter;
 import org.wikimedia.lsearch.test.WikiTestCase;
 import org.wikimedia.lsearch.util.StringUtils;
-
-import junit.framework.TestCase;
 
 /**
  * @author rainman

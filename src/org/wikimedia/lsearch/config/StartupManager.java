@@ -14,7 +14,6 @@ import org.wikimedia.lsearch.interoperability.RMIServer;
 import org.wikimedia.lsearch.search.NetworkStatusThread;
 import org.wikimedia.lsearch.search.SearcherCache;
 import org.wikimedia.lsearch.search.UpdateThread;
-import org.wikimedia.lsearch.search.Warmup;
 import org.wikimedia.lsearch.util.Localization;
 import org.wikimedia.lsearch.util.UnicodeDecomposer;
 

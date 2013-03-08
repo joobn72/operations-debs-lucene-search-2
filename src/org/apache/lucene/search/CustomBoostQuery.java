@@ -1,6 +1,6 @@
 package org.apache.lucene.search;
 
-import org.apache.lucene.search.*;
+
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more

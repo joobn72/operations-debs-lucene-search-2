@@ -3,10 +3,8 @@ package org.wikimedia.lsearch.spell;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 /**
  * Remotely test a spell-checker host

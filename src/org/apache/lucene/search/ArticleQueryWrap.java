@@ -3,9 +3,6 @@ package org.apache.lucene.search;
 import java.io.IOException;
 
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.search.CustomBoostQuery.CustomWeight;
-import org.wikimedia.lsearch.search.NamespaceFilter;
-import org.wikimedia.lsearch.search.RankField;
 
 /**
  * Wrapper for queries to provide scaling based 

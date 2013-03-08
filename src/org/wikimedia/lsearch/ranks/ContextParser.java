@@ -2,9 +2,6 @@ package org.wikimedia.lsearch.ranks;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Hashtable;
-
-import org.wikimedia.lsearch.util.Localization;
 
 /**
  * Parse wiki-text into sentences. Each sentence will provide a

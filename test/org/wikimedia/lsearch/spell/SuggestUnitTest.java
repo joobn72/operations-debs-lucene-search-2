@@ -1,13 +1,11 @@
 package org.wikimedia.lsearch.spell;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.search.NamespaceFilter;
-import org.wikimedia.lsearch.search.SearcherCache;
 import org.wikimedia.lsearch.spell.dist.EditDistance;
 import org.wikimedia.lsearch.test.WikiTestCase;
 

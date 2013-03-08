@@ -2,10 +2,6 @@ package org.wikimedia.lsearch.highlight;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Set;
-
-import org.wikimedia.lsearch.analyzers.Alttitles;
-import org.wikimedia.lsearch.analyzers.ExtToken;
 
 /**
  * Snippet of highlighted text.

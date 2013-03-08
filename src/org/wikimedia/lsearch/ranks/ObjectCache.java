@@ -1,8 +1,6 @@
 package org.wikimedia.lsearch.ranks;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.WeakHashMap;
 
 /**
  * Maintain a cache of objects. Cache is a simple FIFO cache of

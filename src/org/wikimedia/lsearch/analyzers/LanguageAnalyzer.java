@@ -2,14 +2,12 @@ package org.wikimedia.lsearch.analyzers;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Token;
-import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 
 /**

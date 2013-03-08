@@ -1,8 +1,6 @@
 package org.wikimedia.lsearch.spell.api;
 
 import java.io.IOException;
-import java.util.Collection;
-
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;

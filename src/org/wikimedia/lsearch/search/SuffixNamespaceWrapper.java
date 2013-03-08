@@ -5,7 +5,6 @@ import java.util.BitSet;
 
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.search.Filter;
-import org.wikimedia.lsearch.config.IndexId;
 
 public class SuffixNamespaceWrapper extends Filter {
 	SuffixNamespaceFilter filter = null;

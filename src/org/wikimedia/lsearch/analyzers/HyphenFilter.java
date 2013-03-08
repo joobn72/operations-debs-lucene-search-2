@@ -2,12 +2,9 @@ package org.wikimedia.lsearch.analyzers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.BitSet;
-
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.index.IndexReader;
 
 public class HyphenFilter extends TokenFilter {
 	ArrayList<Token> buffer = new ArrayList<Token>();

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import org.apache.log4j.Logger;
-import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.search.AggregateInfo;
 import org.wikimedia.lsearch.analyzers.AggregateAnalyzer;

@@ -24,7 +24,6 @@ import org.apache.lucene.index.TermEnum;
 import org.wikimedia.lsearch.util.ProgressReport;
 
 import java.io.*;
-import java.text.MessageFormat;
 
 /**
  * Lucene Dictionary: terms taken from the given field

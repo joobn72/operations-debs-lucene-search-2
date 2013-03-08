@@ -1,11 +1,7 @@
 package org.wikimedia.lsearch.related;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map.Entry;
-
-import org.wikimedia.lsearch.beans.ArticleLinks;
 
 /**
  * Abstraction of links retrieval and other operations related to

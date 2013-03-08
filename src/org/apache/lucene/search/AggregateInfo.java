@@ -2,7 +2,6 @@ package org.apache.lucene.search;
 
 import java.io.IOException;
 
-import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
 import org.wikimedia.lsearch.analyzers.Aggregate.Flags;
 

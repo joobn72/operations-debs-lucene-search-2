@@ -1,7 +1,5 @@
 package org.wikimedia.lsearch.util;
 
-import java.util.HashMap;
-
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;

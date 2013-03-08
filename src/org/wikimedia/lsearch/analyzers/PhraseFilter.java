@@ -1,17 +1,12 @@
 package org.wikimedia.lsearch.analyzers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.Term;
-import org.wikimedia.lsearch.config.IndexId;
-import org.wikimedia.lsearch.config.IndexRegistry;
 
 /**
  * Filter that outputs phrases and words mixed, e.g.

@@ -2,14 +2,11 @@ package org.wikimedia.lsearch.util;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Inet4Address;
-import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;

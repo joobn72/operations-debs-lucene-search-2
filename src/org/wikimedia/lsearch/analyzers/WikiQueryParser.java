@@ -4,11 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -24,9 +22,7 @@ import org.apache.lucene.search.ArticleQueryWrap;
 import org.apache.lucene.search.ArticleScaling;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.LogTransformScore;
 import org.apache.lucene.search.MultiPhraseQuery;
-import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.PositionalMultiQuery;
 import org.apache.lucene.search.PositionalOptions;
 import org.apache.lucene.search.PositionalQuery;
@@ -43,7 +39,6 @@ import org.wikimedia.lsearch.search.Fuzzy;
 import org.wikimedia.lsearch.search.MatchAllTitlesQuery;
 import org.wikimedia.lsearch.search.NamespaceFilter;
 import org.wikimedia.lsearch.search.Wildcards;
-import org.wikimedia.lsearch.util.Localization;
 
 /**
  * Parser for wiki query syntax

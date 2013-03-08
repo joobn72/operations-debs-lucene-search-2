@@ -1,7 +1,6 @@
 package org.wikimedia.lsearch.util;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 

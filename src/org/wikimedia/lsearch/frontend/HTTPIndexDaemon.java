@@ -7,7 +7,6 @@ package org.wikimedia.lsearch.frontend;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.wikimedia.lsearch.beans.Title;

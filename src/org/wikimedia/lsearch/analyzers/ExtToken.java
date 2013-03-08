@@ -1,12 +1,9 @@
 package org.wikimedia.lsearch.analyzers;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;

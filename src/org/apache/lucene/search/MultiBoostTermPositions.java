@@ -8,9 +8,6 @@ import org.apache.lucene.util.PriorityQueue;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 /**
  * Similar to MultipleTermPositions, but allows custom boost

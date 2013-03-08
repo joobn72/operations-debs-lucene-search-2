@@ -1,9 +1,6 @@
 package org.wikimedia.lsearch.related;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
@@ -11,7 +8,6 @@ import org.mediawiki.importer.DumpWriter;
 import org.mediawiki.importer.Page;
 import org.mediawiki.importer.Revision;
 import org.mediawiki.importer.Siteinfo;
-import org.wikimedia.lsearch.beans.ArticleLinks;
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.search.NamespaceFilter;
 import org.wikimedia.lsearch.util.Localization;

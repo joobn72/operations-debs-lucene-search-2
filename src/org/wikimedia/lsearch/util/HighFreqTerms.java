@@ -17,7 +17,6 @@ package org.wikimedia.lsearch.util;
  */
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -29,7 +28,6 @@ import org.apache.lucene.util.PriorityQueue;
 import org.wikimedia.lsearch.beans.LocalIndex;
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.config.IndexRegistry;
-import org.wikimedia.lsearch.search.SearcherCache;
 
 /**
  * <code>HighFreqTerms</code> class extracts terms and their frequencies out

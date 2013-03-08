@@ -16,9 +16,6 @@
 
 package org.wikimedia.lsearch.spell.dist;
 
-import java.io.IOException;
-import java.io.InvalidObjectException;
-
 
 /**
  * Encodes a string into a double metaphone value.

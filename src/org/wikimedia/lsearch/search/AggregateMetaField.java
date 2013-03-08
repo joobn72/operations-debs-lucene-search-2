@@ -1,21 +1,15 @@
 package org.wikimedia.lsearch.search;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.WeakHashMap;
-
-import javax.print.attribute.standard.Finishings;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexReader.FieldOption;
 import org.apache.lucene.store.Directory;
 import org.wikimedia.lsearch.analyzers.Aggregate.Flags;
 
