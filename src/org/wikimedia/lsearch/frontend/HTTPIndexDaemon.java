@@ -51,7 +51,7 @@ public class HTTPIndexDaemon extends HttpHandler {
 			query.put("text",postData);
 		}
 		
-		Collection keys = query.keySet();
+		Collection<String> keys = query.keySet();
 		// find the method of class update daemon
 		Class[] paramTypes = null;
 		Object[] params = null;

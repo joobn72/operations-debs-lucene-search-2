@@ -98,7 +98,7 @@ public class AnalysisTest extends WikiTestCase {
 
 	public static Token[] tokensFromAnalysis(Analyzer analyzer, String text, String field) throws IOException {
 		TokenStream stream = analyzer.tokenStream(field, text);
-		ArrayList tokenList = new ArrayList();
+		ArrayList<Token> tokenList = new ArrayList<Token>();
 		while (true) {
 			Token token = stream.next();
 			if (token == null) break;

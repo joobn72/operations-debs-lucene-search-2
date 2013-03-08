@@ -1264,7 +1264,7 @@ public class GlobalConfiguration {
 	 * @return lowercased db type
 	 */
 	protected String getMainDBType(String dbname){
-		Enumeration e = ((Hashtable)database.get(dbname)).keys();
+		Enumeration<String> e = database.get(dbname).keys();
 		while(e.hasMoreElements()){
 			String type = (String)e.nextElement();
 			if(type.equals("single") || type.equals("mainsplit") || type.equals("split"))

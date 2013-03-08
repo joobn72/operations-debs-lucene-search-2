@@ -100,7 +100,7 @@ public class SearchEngine {
 	}
 	
 	/** Main search method, call this from the search frontend */
-	public SearchResults search(String dbname, String what, String searchterm, HashMap query, double version) {
+	public SearchResults search(String dbname, String what, String searchterm, HashMap<String,Object> query, double version) {
 		IndexId iid = IndexId.get(dbname);
 		if (what.equals("search") || what.equals("explain")) {
 			int offset = 0, limit = 20; boolean exactCase = false;

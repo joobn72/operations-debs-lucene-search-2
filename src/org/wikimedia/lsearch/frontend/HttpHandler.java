@@ -52,7 +52,7 @@ abstract public class HttpHandler extends Thread {
 	protected String charset = "none";
 	boolean headersSent;
 
-	protected HashMap headers;
+	protected HashMap<String,Object> headers;
 	
 	protected static HttpMonitor monitor = null; 
 
@@ -149,7 +149,7 @@ abstract public class HttpHandler extends Thread {
 	 *   and the POST content is article text
 	 */
 	protected void handle() {
-		headers = new HashMap();
+		headers = new HashMap<String,Object>();
 
 		// parse first line		
 		String request = readInputLine();

@@ -27,10 +27,10 @@ public class FilterFactory {
 	protected IndexId iid;
 	protected String snowballName = null;
 	protected boolean useStemmer,useLangFilter;
-	protected Class stemmer = null;
-	protected Class langFilter = null;
+	protected Class<? extends TokenFilter> stemmer = null;
+	protected Class<? extends TokenFilter> langFilter = null;
 	protected boolean usingCJK = false;
-	protected ArrayList<Class> additionalFilters = null;
+	protected ArrayList<Class<? extends TokenFilter>> additionalFilters = null;
 	protected Singular singular = null;
 	protected boolean hasCanonicalFilter = false;
 	protected boolean hasLanguageVariants = false;
@@ -53,7 +53,10 @@ public class FilterFactory {
 		noStemmerFilterFactory = new FilterFactory(iid,lang,snowballName,false,useLangFilter,null,langFilter,usingCJK,additionalFilters,singular,hasCanonicalFilter,stopWords,type); 
 	}
 		
-	public FilterFactory(IndexId iid, String lang, String snowballName, boolean useStemmer, boolean useLangFilter, Class stemmer, Class langFilter, boolean usingCJK, ArrayList<Class> additionalFilters, Singular singular, boolean hasCanonicalFiler, Set<String> stopWords, Type type) {
+	public FilterFactory(IndexId iid, String lang, String snowballName, boolean useStemmer, boolean useLangFilter,
+			Class<? extends TokenFilter> stemmer, Class<? extends TokenFilter> langFilter, boolean usingCJK,
+			ArrayList<Class<? extends TokenFilter>> additionalFilters, Singular singular, boolean hasCanonicalFiler,
+			Set<String> stopWords, Type type) {
 		this.iid = iid;
 		this.lang = lang;
 		this.snowballName = snowballName;
@@ -161,9 +164,9 @@ public class FilterFactory {
 		lang.equals("zh-classical") || lang.equals("zh-yue");
 	}
 	
-	protected void addAdditionalFilter(Class filterClass){
+	protected void addAdditionalFilter(Class<? extends TokenFilter> filterClass){
 		if(additionalFilters == null)
-			additionalFilters = new ArrayList<Class>();
+			additionalFilters = new ArrayList<Class<? extends TokenFilter>>();
 		additionalFilters.add(filterClass);
 	}
 	
@@ -174,7 +177,7 @@ public class FilterFactory {
 			return new SnowballFilter(in,snowballName);
 		else if(stemmer != null){
 			try {
-				return (TokenFilter) stemmer.getConstructor(TokenStream.class).newInstance(in);
+				return stemmer.getConstructor(TokenStream.class).newInstance(in);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -203,7 +206,7 @@ public class FilterFactory {
 		try {
 			TokenStream chain = in;
 			// nest additional filters, apply them as added to the list
-			for(Class filter : additionalFilters){				
+			for(Class<? extends TokenFilter> filter : additionalFilters){				
 				chain = (TokenStream) filter.getConstructor(TokenStream.class).newInstance(chain);
 				if(filter.getName().equals("org.wikimedia.lsearch.analyzers.PhraseFilter")){
 					((PhraseFilter) chain).setStopWords(stopWords);

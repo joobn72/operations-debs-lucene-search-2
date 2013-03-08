@@ -39,30 +39,30 @@ public class GlobalConfigurationTest extends WikiTestCase {
 
 	public void testReadURL(){
 		// database
-		Hashtable database = global.database;
-		Hashtable roles = (Hashtable) database.get("entest");
+		Hashtable<String, Hashtable<String, Hashtable<String, String>>> database = global.database;
+		Hashtable<String, Hashtable<String, String>> roles = database.get("entest");
 		assertNotNull(roles.get("mainsplit"));
 		assertNotNull(roles.get("mainpart"));
 		assertNotNull(roles.get("restpart"));
 
-		Hashtable mainpart = (Hashtable) roles.get("mainpart");
+		Hashtable<String, String> mainpart = roles.get("mainpart");
 		assertEquals("false",mainpart.get("optimize"));
 		assertEquals("2",mainpart.get("mergeFactor"));
 		assertEquals("10",mainpart.get("maxBufDocs"));
 
-		Hashtable splitroles = (Hashtable) database.get("frtest");
+		Hashtable<String, Hashtable<String, String>> splitroles = database.get("frtest");
 		assertNotNull(splitroles.get("split"));
 		assertNotNull(splitroles.get("part1"));
 		assertNotNull(splitroles.get("part2"));
 		assertNotNull(splitroles.get("part3"));
 
-		Hashtable nspart1 = (Hashtable) ((Hashtable) database.get("njawiki")).get("nspart1");
+		Hashtable<String, String> nspart1 = database.get("njawiki").get("nspart1");
 		assertEquals("false",nspart1.get("optimize"));
 		assertEquals("5",nspart1.get("mergeFactor"));
 
 		// search
-		Hashtable search = global.search;
-		ArrayList sr = (ArrayList) search.get("192.168.0.2");
+		Hashtable<String,ArrayList<String>> search = global.search;
+		ArrayList<String> sr = search.get("192.168.0.2");
 
 		String[] ssr = (String[]) sr.toArray(new String [] {} );
 
@@ -81,8 +81,8 @@ public class GlobalConfigurationTest extends WikiTestCase {
 
 
 		// index
-		Hashtable index = global.index;
-		ArrayList ir = (ArrayList) index.get("192.168.0.5");
+		Hashtable<String,ArrayList<String>> index = global.index;
+		ArrayList<String> ir = index.get("192.168.0.5");
 
 		String[] sir = (String[]) ir.toArray(new String [] {} );
 
@@ -98,7 +98,7 @@ public class GlobalConfigurationTest extends WikiTestCase {
 		assertEquals(17,sir.length);
 
 		// indexLocation
-		Hashtable indexLocation = global.indexLocation;
+		Hashtable<String,String> indexLocation = global.indexLocation;
 
 		assertEquals("192.168.0.5",indexLocation.get("entest.mainpart"));
 		assertEquals("192.168.0.2",indexLocation.get("entest.ngram"));

@@ -86,7 +86,7 @@ public class MultiSearcherMul extends MultiSearcherBase implements SearchableMul
 	    Query rewrittenQuery = rewrite(original);
 
 	    // step 2
-	    Set terms = new HashSet();
+	    Set<Term> terms = new HashSet<Term>();
 	    rewrittenQuery.extractTerms(terms);
 
 	    // step3
@@ -100,7 +100,7 @@ public class MultiSearcherMul extends MultiSearcherBase implements SearchableMul
 	      }
 	    }
 
-	    HashMap dfMap = new HashMap();
+	    HashMap<Term,Integer> dfMap = new HashMap<Term,Integer>();
 	    for(int i=0; i<allTermsArray.length; i++) {
 	      dfMap.put(allTermsArray[i], new Integer(aggregatedDfs[i]));
 	    }

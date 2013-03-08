@@ -427,8 +427,8 @@ public class WikiQueryParser {
 	public HashSet<NamespaceFilter> getFieldNamespaces(String queryText){
 		HashSet<String> fields = getFields(queryText);
 		HashSet<NamespaceFilter> ret = new HashSet<NamespaceFilter>();
-		List ThreadingKeywords = new ArrayList();
-		ThreadingKeywords.add("inthread");		
+		List<String> threadingKeywords = new ArrayList<String>();
+		threadingKeywords.add("inthread");		
 		
 		for(String field : fields){
 			field = field.toLowerCase();
@@ -440,7 +440,7 @@ public class WikiQueryParser {
 				ret.add(defaultNamespaceFilter);
 			else if(field.startsWith("[")){
 				ret.add(new NamespaceFilter(field.substring(1,field.length()-1)));
-			} else if (ThreadingKeywords.contains(field)) {
+			} else if (threadingKeywords.contains(field)) {
 				ret.add( new NamespaceFilter(90) );
 			}
 		}

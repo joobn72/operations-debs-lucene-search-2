@@ -94,9 +94,9 @@ public class IndexUpdatesCollector implements DumpWriter {
 		RMIMessengerClient messenger = new RMIMessengerClient(true);
 		// write to localization
 		HashMap<Integer,String> map = new HashMap<Integer,String>();
-		Iterator it = info.Namespaces.orderedEntries();
+		Iterator<Entry<Integer, String>> it = info.Namespaces.orderedEntries();
 		while(it.hasNext()){
-			Entry<Integer,String> pair = (Entry<Integer,String>)it.next();
+			Entry<Integer,String> pair = it.next();
 			map.put(pair.getKey(),pair.getValue());			
 		}
 		messenger.addLocalizationCustomMapping(iid.getIndexHost(),map,iid.getDBname());

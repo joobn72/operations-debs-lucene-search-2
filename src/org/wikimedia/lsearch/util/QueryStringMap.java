@@ -101,8 +101,8 @@ public class QueryStringMap extends LinkedHashMap implements Map {
 	private static void testURI(String uri) throws URISyntaxException {
 		QueryStringMap map = new QueryStringMap(new URI(uri));
 		System.out.println(uri);
-		Set keys = map.keySet();
-		for (Iterator i = keys.iterator(); i.hasNext();) {
+		Set<String> keys = map.keySet();
+		for (Iterator<String> i = keys.iterator(); i.hasNext();) {
 			 String key = (String)i.next();
 			 System.out.println("  \"" + key + "\" => \"" + map.get(key) + "\"");
 		}

@@ -101,7 +101,7 @@ public class SearchDaemon extends HttpHandler {
 		try{
 			long start = System.currentTimeMillis();
 			SearchEngine search = new SearchEngine();
-			HashMap query = new QueryStringMap(uri);
+			HashMap<String,Object> query = new QueryStringMap(uri);
 			double version = getVersion(query);
 			SearchResults res = search.search(dbname,what,searchterm,query,version);
 
@@ -258,7 +258,7 @@ public class SearchDaemon extends HttpHandler {
 	}
 
 
-	private double getVersion(HashMap query) {
+	private double getVersion(HashMap<String,Object> query) {
 		String v = (String)query.get("version");
 		if(v == null)
 			v = (String)query.get("ver");

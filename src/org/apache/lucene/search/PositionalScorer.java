@@ -530,14 +530,14 @@ abstract public class PositionalScorer extends Scorer {
 			if (!checkedRepeats) {
 				checkedRepeats = true;
 				// check for repeats
-				HashMap m = null;
+				HashMap<PhrasePositionsBoost,Object> m = null;
 				for (PhrasePositionsBoost pp = first; pp != null; pp = pp.next) {
 					int tpPos = pp.position + pp.offset;
 					for (PhrasePositionsBoost pp2 = pp.next; pp2 != null; pp2 = pp2.next) {
 						int tpPos2 = pp2.position + pp2.offset;
 						if (tpPos2 == tpPos) { 
 							if (m == null)
-								m = new HashMap();
+								m = new HashMap<PhrasePositionsBoost,Object>();
 							pp.repeats = true;
 							pp2.repeats = true;
 							m.put(pp,null);
@@ -552,9 +552,9 @@ abstract public class PositionalScorer extends Scorer {
 			// with repeats must advance some repeating pp's so they all start with differing tp's       
 			if (repeats!=null) {
 				// must propagate higher offsets first (otherwise might miss matches).
-				Arrays.sort(repeats,  new Comparator() {
-					public int compare(Object x, Object y) {
-						return ((PhrasePositionsBoost) y).offset - ((PhrasePositionsBoost) x).offset;
+				Arrays.sort(repeats,  new Comparator<PhrasePositionsBoost>() {
+					public int compare(PhrasePositionsBoost x, PhrasePositionsBoost y) {
+						return y.offset - x.offset;
 					}});
 				// now advance them
 				for (int i = 0; i < repeats.length; i++) {

@@ -112,8 +112,8 @@ public class DumpImporter implements DumpWriter {
 	}	
 	
 	/** Process LQT properties, convert titles into correct format */
-	public static Hashtable<String, String> processLiquidThreadInfo(Hashtable info){
-		Enumeration e = info.keys();
+	public static Hashtable<String, String> processLiquidThreadInfo(Hashtable<String,Object> info){
+		Enumeration<String> e = info.keys();
 		Hashtable<String,String> res = new Hashtable<String,String>();
 		while (e.hasMoreElements()) {
 			String key = (String)e.nextElement();
@@ -137,9 +137,9 @@ public class DumpImporter implements DumpWriter {
 		// nop
 	}
 	public void writeSiteinfo(Siteinfo info) throws IOException {
-		Iterator it = info.Namespaces.orderedEntries();
+		Iterator<Entry<Integer, String>> it = info.Namespaces.orderedEntries();
 		while(it.hasNext()){
-			Entry<Integer,String> pair = (Entry<Integer,String>)it.next();
+			Entry<Integer,String> pair = it.next();
 			Localization.addCustomMapping(pair.getValue(),pair.getKey(),iid.getDBname());
 		}
 	}	

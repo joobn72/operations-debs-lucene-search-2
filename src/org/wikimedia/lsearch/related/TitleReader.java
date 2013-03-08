@@ -55,9 +55,9 @@ public class TitleReader  implements DumpWriter{
 	}
 	public void writeSiteinfo(Siteinfo info) throws IOException {
 		// write siteinfo to localization
-		Iterator it = info.Namespaces.orderedEntries();
+		Iterator<Entry<Integer, String>> it = info.Namespaces.orderedEntries();
 		while(it.hasNext()){
-			Entry<Integer,String> pair = (Entry<Integer,String>)it.next();
+			Entry<Integer,String> pair = it.next();
 			Localization.addCustomMapping(pair.getValue(),pair.getKey(),iid.getDBname());
 		}
 	}	

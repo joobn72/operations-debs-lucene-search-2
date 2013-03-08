@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -769,7 +770,7 @@ public class WikiIndexModifier {
 			doc.add(rtitle);
 			
 			// Threading information
-			java.util.Enumeration e = article.DiscussionThreadingInfo.keys();
+			Enumeration<String> e = article.DiscussionThreadingInfo.keys();
 			while (e.hasMoreElements()) {
 				String key = (String)e.nextElement();
 				String value = article.DiscussionThreadingInfo.get(key);
