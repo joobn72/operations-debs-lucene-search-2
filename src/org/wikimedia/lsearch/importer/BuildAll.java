@@ -87,6 +87,7 @@ public class BuildAll {
 				iids.add(IndexId.get(parts[0]));
 				dumpFiles.put(parts[0],parts[1]);				
 			}
+			reader.close();
 		} else{
 			iids.add(IndexId.get(dbname));
 			dumpFiles.put(dbname,dump);

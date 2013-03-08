@@ -28,6 +28,7 @@ public class ConvertFile {
 		while((line = in.readLine()) != null){
 			out.println(line);
 		}
+		in.close();
 		out.close();
 	}
 }

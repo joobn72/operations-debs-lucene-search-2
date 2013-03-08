@@ -268,6 +268,7 @@ public class MySQLStorage extends Storage {
 			while((line = file.readLine()) != null){
 				sb.append(line.replaceFirst("--.*",""));
 			}
+			file.close();
 			def = sb.toString();
 		}
 		// preprocess dbprefix tags

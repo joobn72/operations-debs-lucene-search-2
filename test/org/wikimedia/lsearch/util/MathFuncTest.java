@@ -31,6 +31,7 @@ public class MathFuncTest {
 		while((line = r.readLine()) != null){
 			val2a.add(new Double(line));
 		}
+		r.close();
 		double[] val2 = new double[val2a.size()];
 		for(int i=0;i<val2.length;i++)
 			val2[i] = val2a.get(i);
