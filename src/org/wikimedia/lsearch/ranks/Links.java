@@ -641,7 +641,6 @@ public class Links {
 	/** Get all contexts in which article <i>to<i/> is linked from <i>from</i>. 
 	 *  Will return null if there is no context, or link is invalid.
 	 * @throws ClassNotFoundException */
-	@SuppressWarnings("unchecked")
 	public ArrayList<String> getContext(String from, String to) throws IOException {
 		ensureRead();
 		String cacheKey = "getContext:"+from;
@@ -741,7 +740,6 @@ public class Links {
 	/** Get all contexts in which article <i>to<i/> is linked from <i>from</i>. 
 	 *  Will return null if there is no context, or link is invalid.
 	 * @throws ClassNotFoundException */
-	@SuppressWarnings("unchecked")
 	public Collection<String> getContextOld(String from, String to) throws IOException {
 		ensureRead();
 		

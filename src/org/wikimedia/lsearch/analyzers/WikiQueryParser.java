@@ -1425,7 +1425,6 @@ public class WikiQueryParser {
 	 * Construct a full query on all the fields in the index from search text
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
 	public Query parse(String queryText, ParsingOptions options){
 		this.wildcards = options.wildcards;
 		this.fuzzy = options.fuzzy;

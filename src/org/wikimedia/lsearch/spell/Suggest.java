@@ -779,7 +779,6 @@ public class Suggest {
 		return true;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private HashSet<String> getContext(String w, LookupSet allWords, Namespaces ns) throws IOException{		
 		if(ns == null || ns.additional){ // no context for nondefault namespaces
 			TermDocs td = reader.termDocs(new Term("context_key",w));

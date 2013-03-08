@@ -399,7 +399,6 @@ public class Highlight {
 		return Math.log(numDocs/(double)(docFreq+1)) + 1.0;
 	}
 	
-	@SuppressWarnings("unchecked")
 	protected static HashMap<String,Double> getTermsNotInTitle(HashMap<String,Double> weightTerm, Alttitles alttitles, HashMap<String,Integer> wordIndex){
 		Alttitles.Info info = alttitles.getTitle();
 		ArrayList<ExtToken> tokens = info.getTokens();
