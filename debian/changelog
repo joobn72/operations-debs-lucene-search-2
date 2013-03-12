@@ -1,3 +1,10 @@
+lucene-search-2 (2.1.7wm1) precise-wikimedia; urgency=low
+
+  * Fix for bug 45795: Ignore non-existent host; reduces noise
+    Patchset by Ram (ram@wikimedia.org)
+
+ -- Peter Youngmeister <py@wikimedia.org>  Tue, 12 Mar 2013 14:39:53 -700
+
 lucene-search-2 (2.1.6wm1) precise-wikimedia; urgency=low
 
   * Moved RMI timeouts to the local configuration file.
