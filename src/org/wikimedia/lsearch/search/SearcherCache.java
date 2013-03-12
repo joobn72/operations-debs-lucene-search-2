@@ -19,8 +19,6 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexReader.FieldOption;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Searchable;
 import org.apache.lucene.search.SearchableMul;
 import org.apache.lucene.store.RAMDirectory;
 import org.wikimedia.lsearch.beans.SearchHost;

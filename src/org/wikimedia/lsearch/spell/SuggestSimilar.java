@@ -11,7 +11,6 @@ import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
-import org.wikimedia.lsearch.analyzers.FastWikiTokenizerEngine;
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.search.IndexSearcherMul;
 import org.wikimedia.lsearch.search.NamespaceCache;

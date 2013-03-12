@@ -1,10 +1,7 @@
 package org.wikimedia.lsearch.search;
 
-import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
@@ -14,9 +11,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.interoperability.RMIMessengerClient;
-import org.wikimedia.lsearch.spell.Suggest;
 import org.wikimedia.lsearch.spell.SuggestResult;
-import org.wikimedia.lsearch.spell.dist.EditDistance;
 
 /**
  * Generates fuzzy queries and maintains cache of fuzzy terms.

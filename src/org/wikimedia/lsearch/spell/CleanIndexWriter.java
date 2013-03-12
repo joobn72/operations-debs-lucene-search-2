@@ -15,7 +15,6 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
 import org.wikimedia.lsearch.analyzers.Analyzers;
 import org.wikimedia.lsearch.analyzers.FieldBuilder;
-import org.wikimedia.lsearch.analyzers.PrefixAnalyzer;
 import org.wikimedia.lsearch.analyzers.StopWords;
 import org.wikimedia.lsearch.beans.Article;
 import org.wikimedia.lsearch.config.IndexId;

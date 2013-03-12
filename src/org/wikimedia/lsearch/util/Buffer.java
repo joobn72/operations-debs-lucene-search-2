@@ -1,12 +1,9 @@
 package org.wikimedia.lsearch.util;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
-
 import org.wikimedia.lsearch.analyzers.Aggregate;
 import org.wikimedia.lsearch.analyzers.Alttitles;
 import org.wikimedia.lsearch.analyzers.ExtToken;

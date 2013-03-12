@@ -3,8 +3,6 @@ package org.wikimedia.lsearch.search;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.wikimedia.lsearch.beans.SearchHost;
 import org.wikimedia.lsearch.config.Configuration;

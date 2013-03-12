@@ -2,10 +2,7 @@ package org.wikimedia.lsearch.analyzers;
 
 import java.util.ArrayList;
 
-import org.apache.lucene.analysis.Token;
-import org.wikimedia.lsearch.analyzers.KeywordsAnalyzer.KeywordsTokenStream;
 import org.wikimedia.lsearch.related.RelatedTitle;
-import org.wikimedia.lsearch.util.MathFunc;
 
 /**
  * Store related fields, containing related article titles

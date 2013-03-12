@@ -18,9 +18,6 @@ import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Random;
-import java.util.TimeZone;
-
 import org.apache.log4j.Logger;
 import org.wikimedia.lsearch.config.Configuration;
 

@@ -1,7 +1,5 @@
 package org.wikimedia.lsearch.benchmark;
 
-import java.sql.ResultSet;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 
 /** Collects and reports results from benchmark threads */

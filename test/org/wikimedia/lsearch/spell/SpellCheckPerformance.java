@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import org.wikimedia.lsearch.config.Configuration;
 import org.wikimedia.lsearch.config.IndexId;
-import org.wikimedia.lsearch.search.NamespaceFilter;
 import org.wikimedia.lsearch.spell.Suggest;
 import org.wikimedia.lsearch.spell.SuggestResult;
 

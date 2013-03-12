@@ -3,36 +3,21 @@ package org.wikimedia.lsearch.spell;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map.Entry;
-import java.util.concurrent.ThreadPoolExecutor.AbortPolicy;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.log4j.Logger;
-import org.apache.lucene.analysis.Token;
 import org.mediawiki.importer.DumpWriter;
 import org.mediawiki.importer.Page;
 import org.mediawiki.importer.Revision;
 import org.mediawiki.importer.Siteinfo;
-import org.wikimedia.lsearch.analyzers.Analyzers;
-import org.wikimedia.lsearch.analyzers.FastWikiTokenizerEngine;
 import org.wikimedia.lsearch.beans.Article;
-import org.wikimedia.lsearch.beans.ArticleLinks;
 import org.wikimedia.lsearch.beans.Redirect;
 import org.wikimedia.lsearch.beans.Title;
 import org.wikimedia.lsearch.config.Configuration;
-import org.wikimedia.lsearch.config.GlobalConfiguration;
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.ranks.Links;
-import org.wikimedia.lsearch.related.CompactArticleLinks;
-import org.wikimedia.lsearch.related.CompactLinks;
 import org.wikimedia.lsearch.related.RelatedTitle;
-import org.wikimedia.lsearch.search.NamespaceFilter;
-import org.wikimedia.lsearch.storage.ArticleAnalytics;
-import org.wikimedia.lsearch.storage.LinkAnalysisStorage;
 import org.wikimedia.lsearch.util.Localization;
 
 /**

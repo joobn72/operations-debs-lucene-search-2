@@ -4,9 +4,7 @@
  */
 package org.wikimedia.lsearch.frontend;
 
-import org.wikimedia.lsearch.beans.Title;
 import org.wikimedia.lsearch.index.IndexThread;
-import org.wikimedia.lsearch.index.IndexUpdateRecord;
 
 /**
  * Abstracts operations of indexer for various frontends. 

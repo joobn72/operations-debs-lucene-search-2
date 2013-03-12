@@ -1,21 +1,16 @@
 package org.wikimedia.lsearch.search;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.Arrays;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.FieldSelector;
-import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Explanation;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.HitCollector;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Searchable;
 import org.apache.lucene.search.SearchableMul;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.TopDocs;

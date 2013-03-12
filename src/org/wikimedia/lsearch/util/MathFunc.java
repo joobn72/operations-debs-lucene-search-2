@@ -1,7 +1,5 @@
 package org.wikimedia.lsearch.util;
 
-import java.util.Arrays;
-
 
 public class MathFunc {
 	

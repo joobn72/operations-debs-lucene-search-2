@@ -3,7 +3,6 @@ package org.apache.lucene.search;
 import java.io.IOException;
 
 import org.apache.lucene.index.IndexReader;
-import org.wikimedia.lsearch.search.NamespaceFilter;
 
 /** Meta information about the whole article */
 public interface ArticleInfo {

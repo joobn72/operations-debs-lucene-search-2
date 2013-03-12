@@ -3,8 +3,6 @@ package org.wikimedia.lsearch.search;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.WeakHashMap;
-
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.search.Filter;
 /**

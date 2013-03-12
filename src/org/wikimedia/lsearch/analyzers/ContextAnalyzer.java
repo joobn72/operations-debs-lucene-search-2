@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.wikimedia.lsearch.analyzers.KeywordsAnalyzer.KeywordsTokenStream;
 import org.wikimedia.lsearch.beans.Title;
 import org.wikimedia.lsearch.ranks.Links;
 import org.wikimedia.lsearch.related.RelatedTitle;

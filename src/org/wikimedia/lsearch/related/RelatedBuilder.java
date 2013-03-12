@@ -1,36 +1,17 @@
 package org.wikimedia.lsearch.related;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
-import org.apache.lucene.analysis.SimpleAnalyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.index.IndexWriter;
-import org.mediawiki.dumper.ProgressFilter;
-import org.mediawiki.dumper.Tools;
-import org.mediawiki.importer.XmlDumpReader;
-import org.wikimedia.lsearch.beans.Title;
 import org.wikimedia.lsearch.config.Configuration;
 import org.wikimedia.lsearch.config.GlobalConfiguration;
 import org.wikimedia.lsearch.config.IndexId;
-import org.wikimedia.lsearch.config.IndexRegistry;
-import org.wikimedia.lsearch.index.IndexThread;
 import org.wikimedia.lsearch.ranks.Links;
-import org.wikimedia.lsearch.search.NamespaceFilter;
-import org.wikimedia.lsearch.spell.api.Dictionary;
 import org.wikimedia.lsearch.spell.api.LuceneDictionary;
 import org.wikimedia.lsearch.spell.api.Dictionary.Word;
-import org.wikimedia.lsearch.storage.ArticleAnalytics;
-import org.wikimedia.lsearch.storage.LinkAnalysisStorage;
 import org.wikimedia.lsearch.storage.RelatedStorage;
 import org.wikimedia.lsearch.util.ProgressReport;
 

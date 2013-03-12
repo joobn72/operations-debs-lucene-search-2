@@ -3,9 +3,7 @@ package org.wikimedia.lsearch.analyzers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.lucene.analysis.KStemFilter;

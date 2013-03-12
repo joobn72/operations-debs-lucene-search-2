@@ -8,25 +8,16 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.Field.Index;
-import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.index.IndexWriter;
 import org.wikimedia.lsearch.analyzers.Analyzers;
-import org.wikimedia.lsearch.analyzers.ExtToken;
 import org.wikimedia.lsearch.analyzers.FieldBuilder;
-import org.wikimedia.lsearch.analyzers.FilterFactory;
-import org.wikimedia.lsearch.analyzers.ReusableLanguageAnalyzer;
 import org.wikimedia.lsearch.analyzers.StopWords;
 import org.wikimedia.lsearch.beans.Article;
-import org.wikimedia.lsearch.beans.IndexReportCard;
 import org.wikimedia.lsearch.config.GlobalConfiguration;
 import org.wikimedia.lsearch.config.IndexId;
-import org.wikimedia.lsearch.index.IndexUpdateRecord;
 import org.wikimedia.lsearch.index.WikiIndexModifier;
 import org.wikimedia.lsearch.index.WikiSimilarity;
 import org.wikimedia.lsearch.ranks.Links;
-import org.wikimedia.lsearch.util.Buffer;
 
 /**
  * IndexWriter for building indexes from scratch.

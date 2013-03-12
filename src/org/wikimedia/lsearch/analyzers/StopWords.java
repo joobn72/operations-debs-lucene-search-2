@@ -1,12 +1,9 @@
 package org.wikimedia.lsearch.analyzers;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 
@@ -14,13 +11,11 @@ import org.apache.log4j.Logger;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermDocs;
 import org.wikimedia.lsearch.benchmark.WordTerms;
-import org.wikimedia.lsearch.config.Configuration;
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.config.IndexRegistry;
 import org.wikimedia.lsearch.search.IndexSearcherMul;
 import org.wikimedia.lsearch.search.SearcherCache;
 import org.wikimedia.lsearch.util.HighFreqTerms;
-import org.wikimedia.lsearch.util.UnicodeDecomposer;
 
 /**
  * Offer various ways of retrieving a list of stop words.

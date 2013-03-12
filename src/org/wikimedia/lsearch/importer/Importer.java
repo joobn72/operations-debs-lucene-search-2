@@ -2,27 +2,17 @@ package org.wikimedia.lsearch.importer;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map.Entry;
-
 import org.apache.log4j.Logger;
 import org.mediawiki.dumper.ProgressFilter;
 import org.mediawiki.dumper.Tools;
 import org.mediawiki.importer.XmlDumpReader;
-import org.wikimedia.lsearch.beans.ArticleLinks;
 import org.wikimedia.lsearch.config.Configuration;
 import org.wikimedia.lsearch.config.GlobalConfiguration;
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.index.IndexThread;
-import org.wikimedia.lsearch.ranks.LinkReader;
 import org.wikimedia.lsearch.ranks.Links;
 import org.wikimedia.lsearch.ranks.LinksBuilder;
-import org.wikimedia.lsearch.related.CompactLinks;
 import org.wikimedia.lsearch.related.RelatedBuilder;
-import org.wikimedia.lsearch.storage.LinkAnalysisStorage;
-import org.wikimedia.lsearch.storage.Storage;
 import org.wikimedia.lsearch.util.Localization;
 import org.wikimedia.lsearch.util.UnicodeDecomposer;
 

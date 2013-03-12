@@ -1,13 +1,10 @@
 package org.wikimedia.lsearch.analyzers;
 
-import java.io.IOException;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 
-import org.apache.commons.lang.WordUtils;
 import org.apache.lucene.analysis.Token;
 import org.wikimedia.lsearch.analyzers.ExtToken.Position;
 import org.wikimedia.lsearch.config.GlobalConfiguration;

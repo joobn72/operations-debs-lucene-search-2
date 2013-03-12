@@ -2,8 +2,6 @@ package org.wikimedia.lsearch.analyzers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.search.Query;
@@ -12,13 +10,8 @@ import org.wikimedia.lsearch.analyzers.FieldBuilder;
 import org.wikimedia.lsearch.analyzers.FieldNameFactory;
 import org.wikimedia.lsearch.analyzers.WikiQueryParser;
 import org.wikimedia.lsearch.analyzers.WikiQueryParser.NamespacePolicy;
-import org.wikimedia.lsearch.config.Configuration;
-import org.wikimedia.lsearch.config.GlobalConfiguration;
 import org.wikimedia.lsearch.config.IndexId;
-import org.wikimedia.lsearch.index.WikiIndexModifier;
 import org.wikimedia.lsearch.test.WikiTestCase;
-
-import junit.framework.TestCase;
 
 public class WikiQueryParserTest extends WikiTestCase {
 	

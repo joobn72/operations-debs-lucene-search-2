@@ -1,30 +1,18 @@
 package org.wikimedia.lsearch.storage;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-
-import javax.naming.OperationNotSupportedException;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.FieldSelector;
 import org.apache.lucene.document.SetBasedFieldSelector;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermDocs;
-import org.wikimedia.lsearch.analyzers.SplitAnalyzer;
-import org.wikimedia.lsearch.beans.LocalIndex;
 import org.wikimedia.lsearch.config.IndexId;
-import org.wikimedia.lsearch.config.IndexRegistry;
-import org.wikimedia.lsearch.index.IndexThread;
 import org.wikimedia.lsearch.ranks.StringList;
 import org.wikimedia.lsearch.related.Related;
-import org.wikimedia.lsearch.spell.api.LuceneDictionary;
-import org.wikimedia.lsearch.spell.api.Dictionary.Word;
 
 /**
  * Store/retrieve link analysis results

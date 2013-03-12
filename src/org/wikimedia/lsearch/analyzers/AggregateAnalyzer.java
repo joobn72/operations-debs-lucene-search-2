@@ -3,12 +3,9 @@ package org.wikimedia.lsearch.analyzers;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.HashSet;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
-import org.wikimedia.lsearch.config.IndexId;
 
 public class AggregateAnalyzer extends Analyzer {
 	public static final int TOKEN_GAP = 256;

@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.MultipleTermPositions;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermPositions;
 

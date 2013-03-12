@@ -10,7 +10,6 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
-import org.apache.lucene.store.BufferedIndexInput;
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.index.IndexUpdateRecord;
 

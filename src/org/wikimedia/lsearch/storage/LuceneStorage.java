@@ -2,7 +2,6 @@ package org.wikimedia.lsearch.storage;
 
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.wikimedia.lsearch.analyzers.SplitAnalyzer;

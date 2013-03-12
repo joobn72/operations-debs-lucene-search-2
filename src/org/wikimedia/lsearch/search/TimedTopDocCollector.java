@@ -1,7 +1,5 @@
 package org.wikimedia.lsearch.search;
 
-import java.io.Serializable;
-
 import org.apache.lucene.search.TopDocCollector;
 
 /**

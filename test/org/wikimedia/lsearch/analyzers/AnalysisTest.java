@@ -1,18 +1,14 @@
 package org.wikimedia.lsearch.analyzers;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-
-import junit.framework.TestCase;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cjk.CJKAnalyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
@@ -21,22 +17,15 @@ import org.wikimedia.lsearch.analyzers.AggregateAnalyzer;
 import org.wikimedia.lsearch.analyzers.Analyzers;
 import org.wikimedia.lsearch.analyzers.ExtToken;
 import org.wikimedia.lsearch.analyzers.FieldBuilder;
-import org.wikimedia.lsearch.analyzers.FilterFactory;
 import org.wikimedia.lsearch.analyzers.KeywordsAnalyzer;
-import org.wikimedia.lsearch.analyzers.LanguageAnalyzer;
-import org.wikimedia.lsearch.analyzers.ReusableLanguageAnalyzer;
 import org.wikimedia.lsearch.analyzers.RelatedAnalyzer;
 import org.wikimedia.lsearch.analyzers.SplitAnalyzer;
 import org.wikimedia.lsearch.analyzers.Aggregate.Flags;
-import org.wikimedia.lsearch.beans.Title;
 import org.wikimedia.lsearch.config.Configuration;
 import org.wikimedia.lsearch.config.GlobalConfiguration;
 import org.wikimedia.lsearch.config.IndexId;
-import org.wikimedia.lsearch.index.WikiIndexModifier;
 import org.wikimedia.lsearch.ranks.StringList;
-import org.wikimedia.lsearch.related.RelatedTitle;
 import org.wikimedia.lsearch.test.WikiTestCase;
-import org.wikimedia.lsearch.util.MathFunc;
 
 public class AnalysisTest extends WikiTestCase {
 	Analyzer a = null;

@@ -23,23 +23,13 @@
  */
 package org.wikimedia.lsearch.config;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Inet4Address;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Properties;
-import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
