@@ -45,10 +45,12 @@ import org.wikimedia.lsearch.util.UnicodeDecomposer;
  *
  */
 public class IncrementalUpdater {
+	public enum ServerType { TIMESTAMP, SEQUENCE };
+
 	static Logger log = Logger.getLogger(IncrementalUpdater.class);
 	protected static int maxQueueSize = 500;
 	protected static int bufferDocs = 50;
-	
+
 	static public class OAIAuthenticator extends Authenticator {
 		protected String username,password;
 		
@@ -85,6 +87,13 @@ public class IncrementalUpdater {
 	 * @param args
 	 */
 	public static void main(String[] args){
+		// only for debugging: allows use of a different log file from the main process
+		for (int i =0; i < args.length; i++) {
+			if (args[i].equals("-configfile")) {
+				Configuration.setConfigFile(args[++i]);
+			}
+		}
+
 		// config
 		Configuration config = Configuration.open();
 		GlobalConfiguration global = GlobalConfiguration.getInstance();
@@ -105,7 +114,15 @@ public class IncrementalUpdater {
 		boolean requestSnapshot = false;
 		String noOptimizationDBlistFile = null;
 		HashSet<String> noOptimizationDBs = new HashSet<String>();
-		
+
+
+		// old servers do timestamp-based transfers but that is unreliable and
+		// may cause lost updates; new ones use sequence numbers which are more
+		// reliable
+		//
+		String seq_first = null;    // first record to fetch
+		ServerType server_type = null;
+
 		// args
 		for(int i=0; i<args.length; i++){
 			if(args[i].equals("-d"))
@@ -130,14 +147,21 @@ public class IncrementalUpdater {
 				requestSnapshot = true;
 			else if(args[i].equals("-nof"))
 				noOptimizationDBlistFile = args[++i];
+			else if(args[i].equals("-q"))
+				seq_first = args[++i];
 			else if(args[i].equals("--help"))
 				break;
+			else if(args[i].equals("-configfile"))
+				++i;  // skip argument
 			else if(args[i].startsWith("-")){
 				System.out.println("Unrecognized switch "+args[i]);
 				return;
 			} else
 				dbnames.add(args[i]);
 		}		
+		if ( null != timestamp && null != seq_first ) {
+			System.out.println( "Cannot specify both timestamp and sequence number" ); return;
+		}
 		if(useLocal)
 			dbnames.addAll(global.getMyIndexDBnames());
 		dbnames.addAll(readDBList(dblist));
@@ -159,6 +183,7 @@ public class IncrementalUpdater {
 			System.out.println("  -ef  - exclude db names listed in dblist file");
 			System.out.println("  -sn  - immediately make unoptimized snapshot as updates finish ");
 			System.out.println("  -nof - use with -sn to specify a file with databases not to be optimized");
+			System.out.println("  -q   - sequence number to start from");
 			return;
 		}
 		// preload
@@ -171,37 +196,85 @@ public class IncrementalUpdater {
 		
 		maxQueueSize = config.getInt("OAI","maxqueue",500);
 		bufferDocs = config.getInt("OAI","bufferdocs",50);
+		log.trace( String.format( "maxQueueSize = %d, bufferDocs = %d\n", maxQueueSize, bufferDocs ) );
 		firstPass.addAll(dbnames);
 		// update
 		do{
-			main_loop: for(String dbname : dbnames){
+			main_loop:
+			for(String dbname : dbnames){
 				try{
-					if(excludeList.contains(dbname))
+					if(excludeList.contains(dbname)) {
+						log.trace( String.format( "%s in excludeList, skipped\n", dbname ) );
 						continue;
+					}
 					IndexId iid = IndexId.get(dbname);
 					OAIHarvester harvester = new OAIHarvester(iid,iid.getOAIRepository(),auth);
 					OAIHarvester harvesterSingle = new OAIHarvester(iid,iid.getOAIRepository(),auth);
-					Properties status = new Properties();				
+					Properties status = new Properties();
 					// read timestamp from status file
 					File statf = new File(iid.getStatusPath());
-					try {										
-						if(statf.exists()){					
+					try {
+						if(statf.exists()){
 							FileInputStream fileis = new FileInputStream(iid.getStatusPath());
 							status.load(fileis);
 							fileis.close();
 						}
 					} catch (IOException e) {
 						log.warn("I/O error reading status file for "+iid+" at "+iid.getStatusPath()+" : "+e.getMessage(),e);
-					}				
-					String from;
-					if(firstPass.contains(dbname) && timestamp!=null)
-						from = timestamp;
-					else
-						from = status.getProperty("timestamp",defaultTimestamp);
-					log.info("Resuming update of "+iid+" from "+from);
-					ArrayList<IndexUpdateRecord> records = harvester.getRecords(from,bufferDocs);
-					if(records.size() == 0)
+					}
+
+					// fetch next batch of records based on sequence number (new scheme) or
+					// timestamp (old scheme)
+					//
+					String from = null, seq_next = null;
+					ArrayList<IndexUpdateRecord> records = null;
+
+					if ( null == server_type ) {	// server type not yet known
+						if ( firstPass.contains( dbname ) ) {
+							if ( null != seq_first ) {
+								server_type = ServerType.SEQUENCE;
+								seq_next = seq_first;
+							} else if ( null != timestamp ) {
+								server_type = ServerType.TIMESTAMP;
+								from = timestamp;
+							}
+						}
+						if ( null == seq_next && null == from ) {
+							seq_next = status.getProperty( "sequence" );
+							if ( null != seq_next ) {
+								server_type = ServerType.SEQUENCE;
+							} else {
+								// The first successful transfer will tell us the server type
+								//server_type = ServerType.TIMESTAMP;
+								from = status.getProperty( "timestamp", defaultTimestamp );
+							}
+						}
+					} else if ( ServerType.TIMESTAMP == server_type ) {
+						from = (firstPass.contains( dbname ) && null != timestamp)
+							? timestamp : status.getProperty( "timestamp", defaultTimestamp );
+					} else {    // sequence numbers
+						seq_next = (firstPass.contains( dbname ) && null != seq_first)
+							? seq_first : status.getProperty( "sequence" );
+					}
+					if ( ServerType.SEQUENCE == server_type ) {  // working with sequence numbers
+						log.info( "Resuming update of "+ iid + ", seq = " + seq_next );
+						records = harvester.getRecordsSeq( seq_next, bufferDocs );
+					} else if ( null == server_type ) {  // test if server can do sequence numbers
+						log.info( "Resuming update of " + iid + ", from = " + from + ", next = -1" );
+						records = harvester.getRecords( from, bufferDocs, true );
+					} else {	      // working with timestamps
+						log.info( "Resuming update of " + iid + ", from = " + from );
+						records = harvester.getRecords( from, bufferDocs );
+					}
+
+					if ( records.size() == 0 ) {
+						log.trace( String.format( "No records\n" ) );
 						continue;
+					}
+					if ( null == server_type ) {	// first successful transfer
+						server_type = harvester.hasNext() ? ServerType.SEQUENCE : ServerType.TIMESTAMP;
+						log.trace( String.format( "Server type = %s\n", server_type ) );
+					}
 					boolean hasMore = false;
 					do{
 						// send to indexer
@@ -209,7 +282,7 @@ public class IncrementalUpdater {
 						try {
 							// send main
 							printRecords(records);
-							ensureNotOverladed(messenger,iid);
+							ensureNotOverloaded(messenger,iid);
 							log.info(iid+": Sending "+records.size()+" records to indexer");
 							HashSet<String> fetch = messenger.enqueueFrontend(records.toArray(new IndexUpdateRecord[] {}),iid.getIndexHost());
 							if(fetch.size()>0){
@@ -220,7 +293,7 @@ public class IncrementalUpdater {
 								}
 								// send additional
 								printRecords(additional);
-								ensureNotOverladed(messenger,iid);
+								ensureNotOverloaded(messenger,iid);
 								log.info(iid+": Sending additional "+additional.size()+" records to indexer");
 								messenger.enqueueFrontend(additional.toArray(new IndexUpdateRecord[] {}),iid.getIndexHost());
 							}
@@ -238,10 +311,12 @@ public class IncrementalUpdater {
 					} while(hasMore);
 
 					// see if we need to wait for notification
+					log.trace( String.format( "notification = %s\n", notification ) );
 					if(notification){
 						RMIMessengerClient messenger = new RMIMessengerClient(true);
 						String host = iid.getIndexHost();
 						boolean req = messenger.requestFlushAndNotify(dbname,host);
+						log.trace( String.format( "req = %s\n", req ) );
 						if(req){
 							log.info("Waiting for flush notification for "+dbname);
 							Boolean succ = null;
@@ -278,14 +353,20 @@ public class IncrementalUpdater {
 							continue main_loop;
 					}
 					
-					// write updated timestamp
-					status.setProperty("timestamp",harvester.getResponseDate());
+					// write timestamp and, possibly, updated sequence number; timestamp not needed
+					// in the new scheme but we save it since it may be useful for debugging
+					//
+					status.setProperty( "timestamp", harvester.getResponseDate() );
+					if ( ServerType.SEQUENCE == server_type ) {
+						status.setProperty( "sequence", harvester.getSequence() );
+					}
 					try {
 						if(!statf.exists())
 							statf.getParentFile().mkdirs();
 						FileOutputStream fileos = new FileOutputStream(statf,false);
 						status.store(fileos,"Last incremental update timestamp");
 						fileos.close();
+						log.trace( String.format( "stored timestamp/sequence to status file\n" ) );
 					} catch (IOException e) {
 						log.warn("I/O error writing status file for "+iid+" at "+iid.getStatusPath()+" : "+e.getMessage(),e);
 					}
@@ -336,7 +417,7 @@ public class IncrementalUpdater {
 		}
 	}
 
-	private static void ensureNotOverladed(RMIMessengerClient messenger, IndexId iid) throws InterruptedException{
+	private static void ensureNotOverloaded(RMIMessengerClient messenger, IndexId iid) throws InterruptedException{
 		// check if indexer is overloaded
 		int queueSize = 0;
 		do{
