@@ -85,14 +85,6 @@ public class IncrementalUpdater {
 	 * @param args
 	 */
 	public static void main(String[] args){
-		// only for debugging: allows use of a different log file from the main process
-		for (int i =0; i < args.length; i++) {
-			if (args[i].equals("-configfile")) {
-				Configuration.setConfigFile(args[++i]);
-				break;
-			}
-		}
-
 		// config
 		Configuration config = Configuration.open();
 		GlobalConfiguration global = GlobalConfiguration.getInstance();
@@ -113,8 +105,7 @@ public class IncrementalUpdater {
 		boolean requestSnapshot = false;
 		String noOptimizationDBlistFile = null;
 		HashSet<String> noOptimizationDBs = new HashSet<String>();
-		String seq_first = null;    // first record to fetch
-
+		
 		// args
 		for(int i=0; i<args.length; i++){
 			if(args[i].equals("-d"))
@@ -139,12 +130,8 @@ public class IncrementalUpdater {
 				requestSnapshot = true;
 			else if(args[i].equals("-nof"))
 				noOptimizationDBlistFile = args[++i];
-			else if(args[i].equals("-q"))
-				seq_first = args[++i];
 			else if(args[i].equals("--help"))
 				break;
-			else if(args[i].equals("-configfile"))
-				++i;  // skip argument
 			else if(args[i].startsWith("-")){
 				System.out.println("Unrecognized switch "+args[i]);
 				return;
@@ -172,7 +159,6 @@ public class IncrementalUpdater {
 			System.out.println("  -ef  - exclude db names listed in dblist file");
 			System.out.println("  -sn  - immediately make unoptimized snapshot as updates finish ");
 			System.out.println("  -nof - use with -sn to specify a file with databases not to be optimized");
-			System.out.println("  -q   - sequence number to start from");
 			return;
 		}
 		// preload
@@ -185,16 +171,13 @@ public class IncrementalUpdater {
 		
 		maxQueueSize = config.getInt("OAI","maxqueue",500);
 		bufferDocs = config.getInt("OAI","bufferdocs",50);
-		log.trace( String.format( "maxQueueSize = %d, bufferDocs = %d\n", maxQueueSize, bufferDocs ) );
 		firstPass.addAll(dbnames);
 		// update
 		do{
 			main_loop: for(String dbname : dbnames){
 				try{
-					if(excludeList.contains(dbname)) {
-						log.trace( String.format( "%s in excludeList, skipped\n", dbname ) );
+					if(excludeList.contains(dbname))
 						continue;
-					}
 					IndexId iid = IndexId.get(dbname);
 					OAIHarvester harvester = new OAIHarvester(iid,iid.getOAIRepository(),auth);
 					OAIHarvester harvesterSingle = new OAIHarvester(iid,iid.getOAIRepository(),auth);
@@ -210,38 +193,15 @@ public class IncrementalUpdater {
 					} catch (IOException e) {
 						log.warn("I/O error reading status file for "+iid+" at "+iid.getStatusPath()+" : "+e.getMessage(),e);
 					}				
-
-					// fetch next batch of records based on sequence number (new scheme) or
-					// timestamp (new scheme)
-					//
-					String from = null,
-					       seq_next = null;
-					ArrayList<IndexUpdateRecord> records = null;
-					if ( firstPass.contains( dbname ) ) {
-						if ( null != seq_first ) {
-							seq_next = seq_first;
-						} else if ( null != timestamp ) {
-							from = timestamp;
-						}
-					}
-					if ( null == seq_next && null == from ) {
-						seq_next = status.getProperty( "sequence" );
-						if ( null == seq_next ) {
-							from = status.getProperty("timestamp",defaultTimestamp);
-						}
-					}
-					if ( null != seq_next ) {  // working with sequence numbers
-						log.info( "Resuming update of "+ iid + ", seq = " + seq_next );
-						records = harvester.getRecordsSeq( seq_next, bufferDocs );
-					} else {	      // working with timestamps
-						log.info( "Resuming update of " + iid + ", from = " + from );
-						records = harvester.getRecords( from, bufferDocs );
-					}
-
-					if(records.size() == 0) {
-						log.trace( String.format( "No records\n" ) );
+					String from;
+					if(firstPass.contains(dbname) && timestamp!=null)
+						from = timestamp;
+					else
+						from = status.getProperty("timestamp",defaultTimestamp);
+					log.info("Resuming update of "+iid+" from "+from);
+					ArrayList<IndexUpdateRecord> records = harvester.getRecords(from,bufferDocs);
+					if(records.size() == 0)
 						continue;
-					}
 					boolean hasMore = false;
 					do{
 						// send to indexer
@@ -274,21 +234,14 @@ public class IncrementalUpdater {
 						if(hasMore){
 							log.info("Fetching more records...");
 							records = harvester.getMoreRecords(bufferDocs);
-
-                                                        if(records.size() == 0) {
-                                                            log.trace( String.format( "Unexpected: hasMore is true but no records\n" ) );
-                                                            break;
-                                                        }
 						}
 					} while(hasMore);
 
 					// see if we need to wait for notification
-					log.trace( String.format( "notification = %s\n", notification ) );
 					if(notification){
 						RMIMessengerClient messenger = new RMIMessengerClient(true);
 						String host = iid.getIndexHost();
 						boolean req = messenger.requestFlushAndNotify(dbname,host);
-						log.trace( String.format( "req = %s\n", req ) );
 						if(req){
 							log.info("Waiting for flush notification for "+dbname);
 							Boolean succ = null;
@@ -325,16 +278,14 @@ public class IncrementalUpdater {
 							continue main_loop;
 					}
 					
-					// write updated sequence number (timestamp not needed)
-					status.setProperty( "sequence", harvester.getSequence() );
-					status.setProperty( "timestamp", harvester.getResponseDate() );
+					// write updated timestamp
+					status.setProperty("timestamp",harvester.getResponseDate());
 					try {
 						if(!statf.exists())
 							statf.getParentFile().mkdirs();
 						FileOutputStream fileos = new FileOutputStream(statf,false);
 						status.store(fileos,"Last incremental update timestamp");
 						fileos.close();
-						log.trace( String.format( "stored sequence to status file\n" ) );
 					} catch (IOException e) {
 						log.warn("I/O error writing status file for "+iid+" at "+iid.getStatusPath()+" : "+e.getMessage(),e);
 					}
