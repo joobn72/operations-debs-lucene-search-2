@@ -29,11 +29,26 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.HashMap;
+
 
 /** A bean-like class that contains information about what namespaces
  *  to filter  */
 public class NamespaceFilter implements Serializable {
 	private BitSet included;
+
+	static final private HashMap<String, Integer> nsmap = new HashMap<String, Integer>();
+
+	static {
+		nsmap.put( "NS_MAIN",      0 );   nsmap.put( "NS_TALK",           1 );
+		nsmap.put( "NS_USER",      2 );   nsmap.put( "NS_USER_TALK",      3 );
+		nsmap.put( "NS_PROJECT",   4 );   nsmap.put( "NS_PROJECT_TALK",   5 );
+		nsmap.put( "NS_FILE",      6 );   nsmap.put( "NS_FILE_TALK",      7 );
+		nsmap.put( "NS_MEDIAWIKI", 8 );   nsmap.put( "NS_MEDIAWIKI_TALK", 9 );
+		nsmap.put( "NS_TEMPLATE",  10 );  nsmap.put( "NS_TEMPLATE_TALK",  11 );
+		nsmap.put( "NS_HELP",      12 );  nsmap.put( "NS_HELP_TALK",      13 );
+		nsmap.put( "NS_CATEGORY",  14 );  nsmap.put( "NS_CATEGORY_TALK",  15 );
+	}
 
 	protected void init(){
 		included = new BitSet(64);
@@ -62,7 +77,10 @@ public class NamespaceFilter implements Serializable {
 		if (namespaces != null && !namespaces.equals("")) {
 			String[] bits = namespaces.split(",");
 			for (int i = 0; i < bits.length; i++) {
-				included.set(Integer.parseInt(bits[i].trim()));
+				String ns = bits[ i ].trim();
+				// some namespaces are symbolic
+				int ins = nsmap.containsKey( ns ) ? nsmap.get( ns ) : Integer.parseInt( ns );
+				included.set( ins );
 			}
 		}
 	}
