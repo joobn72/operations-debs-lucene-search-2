@@ -34,27 +34,39 @@ public class OAIParser extends DefaultHandler {
 	protected IndexUpdatesCollector collector;
 	/** parsing state */
 	protected boolean inRecord, inHeader, inMetadata, inResponseDate;
-	protected boolean inDump, inIdentifier, inResumptionToken;
-	protected String oaiId,pageId,resumptionToken,responseDate;
-	protected boolean beginMW; // beginning of mediawiki stream
-	protected String mwUri, mwLocalName, mwQName;
+	protected boolean inDump, inIdentifier, inResumptionToken, inSequence;
+	protected String  oaiId,pageId, resumptionToken, responseDate, sequence;
+	protected boolean beginMW;    // beginning of mediawiki stream
+	protected String  mwUri, mwLocalName, mwQName;
 	protected boolean isDeleted, inReferences, inRedirect, inRedirectTitle, inRedirectRef;
-	protected String references, redirectTitle, redirectRef;
+	protected String  references, redirectTitle, redirectRef;
 	
 	
 	public OAIParser(InputStream in, IndexUpdatesCollector collector){
 		dumpReader = new XmlDumpReader(null,collector);
 		this.in = in;
 		this.collector = collector;
-		inDump = false; inIdentifier = false; inResumptionToken = false;
-		inRecord = false; inHeader = false; inMetadata = false;
-		inResponseDate = false; inReferences = false;
-		oaiId = ""; resumptionToken = ""; responseDate = "";
-		beginMW = true; references = "";
-		inRedirect = false; inRedirectTitle= false; inRedirectRef = false;
-		redirectTitle = ""; redirectRef = "";
+		inDump		  = false;
+		inIdentifier	  = false;
+		inResumptionToken = false;
+		inSequence	  = false;
+		inRecord	  = false;
+		inHeader	  = false;
+		inMetadata	  = false;
+		inResponseDate	  = false;
+		inReferences	  = false;
+		inRedirect	  = false;
+		inRedirectTitle	  = false;
+		inRedirectRef	  = false;
+		oaiId		  = "";
+		resumptionToken	  = "";
+		responseDate	  = "";
+		beginMW		  = true;
+		references	  = "";
+		redirectTitle	  = "";
+		redirectRef	  = "";
 	}
-	
+
 	public void parse() throws IOException{
 		try {
 			SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -110,6 +122,9 @@ public class OAIParser extends DefaultHandler {
 		} else if(qName.equals("resumptionToken")){
 			resumptionToken = "";
 			inResumptionToken = true;
+		} else if(qName.equals("next")){
+			sequence = "";
+			inSequence = true;
 		} else if(qName.equals("responseDate")){
 			responseDate = "";
 			inResponseDate = true;
@@ -160,6 +175,8 @@ public class OAIParser extends DefaultHandler {
 			inIdentifier = false;
 		} else if(qName.equals("resumptionToken"))
 			inResumptionToken = false;
+		else if(qName.equals("next"))
+			inSequence = false;
 		else if(qName.equals("responseDate"))
 			inResponseDate = false;
 	}
@@ -173,6 +190,8 @@ public class OAIParser extends DefaultHandler {
 			dumpReader.characters(ch,start,length);
 		} else if(inResumptionToken){
 			resumptionToken += new String(ch,start,length);
+		} else if(inSequence){
+			sequence += new String(ch,start,length);
 		} else if(inResponseDate){
 			responseDate += new String(ch,start,length);
 		} else if(inReferences){
@@ -195,6 +214,10 @@ public class OAIParser extends DefaultHandler {
 		return resumptionToken;
 	}
 
+	public String getSequence() {
+		return sequence;
+	}
+
 	public IndexUpdatesCollector getCollector() {
 		return collector;
 	}
@@ -202,7 +225,4 @@ public class OAIParser extends DefaultHandler {
 	public String getResponseDate() {
 		return responseDate;
 	}
-	
-	
-	
 }
