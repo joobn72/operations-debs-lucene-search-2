@@ -19,7 +19,6 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermDocs;
 import org.apache.lucene.index.TermEnum;
-import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.ArticleNamespaceScaling;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Searchable;
@@ -85,9 +84,16 @@ public class SearchEngine {
 	/** dbname -> ns_index -> ns_string */
 	protected static Hashtable<String,Hashtable<Integer,String>> dbNamespaceNames = new Hashtable<String,Hashtable<Integer,String>>();
 	
+	/** non-existent host name */
+	protected String nullHost;
+
 	public SearchEngine(){
 		if(config == null)
 			config = Configuration.open();
+
+		nullHost = config.getString( "Search", "nullHost", "" );    // non-existent host
+		log.info( "nullHost = " + nullHost );
+
 		if(global == null){
 			global = GlobalConfiguration.getInstance();
 			maxlimit = global.getMaxSearchLimit();
@@ -682,15 +688,38 @@ public class SearchEngine {
 						}
 						// query 
 						Wildcards wildcards = new Wildcards(piid,host,exactCase);
-						q = parseQuery(searchterm,parser,iid,raw,nsfw,searchAll,wildcards);
-						
-						RMIMessengerClient messenger = new RMIMessengerClient();						
-						HighlightPack pack = messenger.searchPart(piid,searchterm,q,nsfw,offset,limit,explain,host);
+						HighlightPack pack = null;
+						try {
+							// parseQuery() can fail with:
+							// RuntimeException: Trying to extract field from zero-length list of terms
+							// at org.wikimedia.lsearch.analyzers.WikiQueryParser.extractField
+							//
+							// searchPart() can fail with:
+							// NullPointerException at org.apache.lucene.search.Searcher.createWeight
+							//
+							q = parseQuery( searchterm, parser, iid, raw, nsfw, searchAll, wildcards);
+							RMIMessengerClient messenger = new RMIMessengerClient();
+							pack = messenger.searchPart(piid,searchterm,q,nsfw,offset,limit,explain,host);
+						} catch (Exception e) {
+							res = new SearchResults();
+							e.printStackTrace();
+							res.setErrorMsg( "Internal error in SearchEngine: " + e.getMessage() );
+							log.error( "Internal error in SearchEngine -- parseQuery or " +
+								   "messenger.searchPart: searchterm = " + searchterm +
+								   e.getMessage(), e );
+							return res;
+						}
 						res = pack.res;
 						res.addInfo("search",formatHost(host));
 						if(!searchOnly){
 							highlight(iid,q,parser.getWordsClean(),pack.terms,pack.dfs,pack.maxDoc,res,exactCase,null,parser.hasPhrases(),false,commonsWiki);
+							if ( ! res.isSuccess() ) {
+								return res;
+							}
 							fetchTitles(res,searchterm,nsfw,iid,parser,offset,iwoffset,iwlimit,explain);
+							if ( ! res.isSuccess() ) {
+								return res;
+							}
 							suggest(iid,searchterm,parser,res,offset,nsfw);
 						}
 						return res;
@@ -716,14 +745,23 @@ public class SearchEngine {
 			try{
 				// query 
 				Wildcards wildcards = new Wildcards(searcher.getAllHosts(),exactCase);
+				// can fail with "RuntimeException: Trying to extract field from zero-length list of terms"
 				q = parseQuery(searchterm,parser,iid,raw,nsfw,searchAll,wildcards);
 								
+				// can fail with "NullPointerException at org.apache.lucene.search.MultiSearcherBase.rewrite"
 				hits = searcher.search(q,nsfw.getFilterOrNull(),offset+limit);
+
 				res = makeSearchResults(searcher,hits,offset,limit,iid,searchterm,q,searchStart,explain);
 				res.addInfo("search",formatHosts(searcher.getAllHosts().values()));
 				if(!searchOnly){
 					highlight(iid,q,parser.getWordsClean(),searcher,parser.getHighlightTerms(),res,exactCase,parser.hasPhrases(),false,commonsWiki);
+					if ( ! res.isSuccess() ) {
+						return res;
+					}
 					fetchTitles(res,searchterm,nsfw,iid,parser,offset,iwoffset,iwlimit,explain);
+					if ( ! res.isSuccess() ) {
+						return res;
+					}
 					suggest(iid,searchterm,parser,res,offset,nsfw);
 				}
 				return res;
@@ -736,15 +774,10 @@ public class SearchEngine {
 				} */
 				e.printStackTrace();
 				res = new SearchResults();
-				res.retry();
-				log.warn("Retry, temporal error for query: ["+searchterm+"] on "+iid+" : "+e.getMessage(),e);
+				res.setErrorMsg( "Internal error in SearchEngine: " + e.getMessage() );
+				log.error( "Internal error in SearchEngine -- parseQuery/search: searchterm = " + searchterm + e.getMessage(), e );
 				return res;
 			}			
-		} catch(ParseException e){
-			res = new SearchResults();
-			res.setErrorMsg("Error parsing query: "+searchterm);
-			log.error("Cannot parse query: "+searchterm+", error: "+e.getMessage(),e);
-			return res;
 		} catch (Exception e) {
 			res = new SearchResults();
 			e.printStackTrace();
@@ -794,6 +827,10 @@ public class SearchEngine {
 				return; // no available 
 			Suggest.ExtraInfo info = new Suggest.ExtraInfo(res.getPhrases(),res.getFoundInContext(),res.getFoundInTitles(),res.getFirstHitRank(),res.isFoundAllInAltTitle());
 			SuggestQuery sq = messenger.suggest(host,iid.toString(),searchterm,tokens,info,nsfw.getNamespaceFilter());
+			if ( null == sq ) {
+				res.setErrorMsg( "Error invoking suggest() on " + host );
+				return;
+			}
 			res.setSuggest(sq);	
 			res.addInfo("suggest",formatHost(host));
 		}
@@ -807,7 +844,8 @@ public class SearchEngine {
 		return true;
 	}
 		
-	protected Query parseQuery(String searchterm, WikiQueryParser parser, IndexId iid, boolean raw, FilterWrapper nsfw, boolean searchAll, Wildcards wildcards) throws ParseException {
+	protected Query parseQuery(String searchterm, WikiQueryParser parser, IndexId iid, boolean raw, FilterWrapper nsfw,
+				   boolean searchAll, Wildcards wildcards) {
 		Query q = null;
 		Fuzzy fuzzy = null;
 		if(iid.hasSpell()){
@@ -900,14 +938,16 @@ public class SearchEngine {
 			SearchResults r = makeTitlesSearchResults(searcher,hits,iwoffset,iwlimit,main,searchterm,q,searchStart,explain);
 			highlightTitles(main,q,words,searcher,r,parser.hasWildcards(),false,null);
 
-			if(r.isSuccess()){
+			if ( r.isSuccess() ) {
 				res.setTitles(r.getResults());				
 				//if(r.isFoundAllInTitle())
 				//	res.setFoundAllInTitle(true);
 				//res.addToFirstHitRank(r.getNumHits());
-			} else
+				res.addInfo( "interwiki", formatHosts( searcher.getAllHosts().values() ) );
+			} else {
 				log.error("Error getting grouped titles search results: "+r.getErrorMsg());
-			res.addInfo("interwiki",formatHosts(searcher.getAllHosts().values()));
+				res.setErrorMsg( "highlightTitles failed: " + r.getErrorMsg() );
+			}
 			
 		} catch(Exception e){
 			e.printStackTrace();
@@ -1044,6 +1084,9 @@ public class SearchEngine {
 		int[] df = searcher.docFreqs(terms); 
 		int maxDoc = searcher.maxDoc();
 		highlight(iid,q,words,terms,df,maxDoc,res,false,null,sortByPhrases,alwaysIncludeFirst,commonsWiki);
+		if ( ! res.isSuccess() ) {
+			return;    // highlight failed
+		}
 		resolveInterwikiNamespaces(res,iid);
 	}
 	
@@ -1089,9 +1132,13 @@ public class SearchEngine {
 				} else{ 
 					// remote call
 					String host = cache.getRandomHost(hiid);
-					if(host == null)
+					if ( host == null || host.equals( nullHost ) )
 						continue; // no available hosts
 					rs = messenger.highlight(host,e.getValue(),hiid.toString(),terms,df,maxDoc,words,exactCase,sortByPhrases,alwaysIncludeFirst);
+					if ( null == rs ) {
+						res.setErrorMsg( "Internal error when highlighting, host = %s" + host );
+						return;
+					}
 					hosts.add(host);
 				}
 				results.putAll(rs.highlighted);

@@ -184,7 +184,7 @@ public class RMIMessengerClient {
 		}
 	}
 	
-	public HighlightPack searchPart(IndexId iid, String searchterm, Query query, FilterWrapper filter, int offset, int limit, boolean explain, String host){
+	public HighlightPack searchPart(IndexId iid, String searchterm, Query query, FilterWrapper filter, int offset, int limit, boolean explain, String host) throws Exception {
 		try {
 			RMIMessenger r = messengerFromCache(host);
 			log.debug("Calling searchPart("+iid+",("+query+"),"+offset+","+limit+") on "+host);
@@ -193,11 +193,9 @@ public class RMIMessengerClient {
 			return res;
 		} catch (Exception e) {
 			recheckRemote(iid,host);
-			HighlightPack pack = new HighlightPack(new SearchResults());
-			pack.res.retry();			
 			log.warn("Error invoking searchPart("+iid+",(term="+searchterm+"),(q="+query+"),"+offset+","+limit+") on "+host+" : "+e.getMessage(),e);
 			e.printStackTrace();
-			return pack;
+			throw e;
 		}
 	}
 	
@@ -255,7 +253,8 @@ public class RMIMessengerClient {
 		} catch(Exception e){
 			log.warn("Exception highligthing words="+words+" on host="+host, e);
 			recheckRemote(IndexId.get(dbrole).getHighlight(),host);
-			return new Highlight.ResultSet(new HashMap<String,HighlightResult>(),new HashSet<String>(),new HashSet<String>(),false,0,new HashSet<String>(),false);
+			//return new Highlight.ResultSet(new HashMap<String,HighlightResult>(),new HashSet<String>(),new HashSet<String>(),false,0,new HashSet<String>(),false);
+			return null;
 		}		
 	}
 	
@@ -270,7 +269,7 @@ public class RMIMessengerClient {
 			}
 			recheckRemote(dbrole,host);
 			SearchResults res = new SearchResults();
-			res.setErrorMsg("Error searching titles: "+e.getMessage());			
+			res.setErrorMsg("Error searching titles: "+e.getMessage());
 			log.warn("Error invoking remote method searchTitles on host "+host+" : "+e.getMessage(),e);
 			return res;
 		}
