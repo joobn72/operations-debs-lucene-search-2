@@ -48,6 +48,8 @@ public class IndexId {
 	protected HashSet<String> mySearchHosts;
 	/** If this hosts searches the index */
 	protected boolean mySearch;
+	/** If this index is disabled by mapping to a non-existent host */
+	protected boolean disabled;
 	
 	/** Database name, e.g. for entest.mainpart, it's entest */
 	protected String dbname;
@@ -193,11 +195,25 @@ public class IndexId {
 	 * @param myIndex    if this machines is an indexer for this index
 	 * @param mySearch   if this machine is a searcher for this index
 	 */
-	public IndexId(String dbrole, String type, String indexHost, String indexRsyncPath, 
-			Hashtable<String, String> typeParams, Hashtable<String, String> params, 
-			HashSet<String> searchHosts, HashSet<String> mySearchHosts, String localIndexPath, 
-			boolean myIndex, boolean mySearch, String OAIRepository, boolean isSubdivided,
-			String titlesIndex, String titlesSuffix, Hashtable<String,String> suffixToDbname) {
+	public IndexId(String                    dbrole,
+		       String                    type,
+		       String                    indexHost,
+		       String                    indexRsyncPath, 
+		       Hashtable<String, String> typeParams,
+		       Hashtable<String, String> params, 
+		       HashSet<String>           searchHosts,
+		       HashSet<String>           mySearchHosts,
+		       String                    localIndexPath,
+		       boolean                   myIndex,
+		       boolean                   mySearch,
+		       String                    OAIRepository,
+		       boolean                   isSubdivided,
+		       String                    titlesIndex,
+		       String                    titlesSuffix,
+		       Hashtable<String,String>  suffixToDbname,
+		       boolean                   dis)
+	{
+		disabled = dis;
 		final String sep = Configuration.PATH_SEP;
 		this.indexHost = indexHost;
 		if(!indexRsyncPath.endsWith("/"))
@@ -859,9 +875,15 @@ public class IndexId {
 		}
 		throw new RuntimeException("Called getInterwikiBySuffix() on non-titles_by_suffix index");		
 	}
+
+	/** If index is disabled */
+	public boolean isDisabled() {
+		return disabled;
+	}
+
 	/** If index containing only titles is defined */
 	public boolean hasTitlesIndex(){
-		return titlesIndex != null;
+		return titlesIndex != null && ! disabled;
 	}
 	/** Get iid where the titles for this index are */
 	public IndexId getTitlesIndex() {

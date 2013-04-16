@@ -109,7 +109,8 @@ public class Configuration {
 			System.exit(1);
 		}
 		try {
-			global.readFromURL(new URL(globalurl),indexpath);
+			String nullHost = getString( "Search", "nullHost", "" );    // non-existent host
+			global.readFromURL(new URL(globalurl), indexpath, nullHost);
 		} catch (MalformedURLException e) {
 			System.out.println("Malformed URL "+globalurl+" cannot read global configuration (check MWConfig.global in "+CONF_FILE_NAME+"), exiting...");
 			System.exit(1);

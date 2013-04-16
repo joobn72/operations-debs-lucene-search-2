@@ -123,6 +123,9 @@ public class GlobalConfiguration {
 	/** Whether to report warnings and info */
 	protected static boolean verbose = true;
 
+	/** name of non-existent host used to disable indices */
+	protected String nullHost;
+
 	/** Sections in lsearch-config.conf */
 	protected static enum Section { DATABASE, INDEX, SEARCH, INDEXPATH, NAMESPACE_PREFIX, OAI, DATABASE_GROUP, NAMESPACE_BOOST };
 
@@ -333,13 +336,15 @@ public class GlobalConfiguration {
 	 * @param url
 	 * @throws IOException
 	 */
-	public void readFromURL(URL url, String indexpath) throws IOException{
+	public void readFromURL(URL url, String indexpath, String nullH ) throws IOException{
+		this.nullHost = nullH;
 		BufferedReader in;
 		try {
 			in = new BufferedReader(
 					new InputStreamReader(
 					url.openStream()));
 			read(in,indexpath);
+
 		} catch (IOException e) {
 			System.out.println("I/O Error in opening or reading global config at url "+url);
 			throw e;
@@ -741,6 +746,15 @@ public class GlobalConfiguration {
 				// HashSet<String> mySearchHosts = getMySearchHosts(dbname,dbrole);
 				HashSet<String> mySearchHosts = searchHosts;
 				boolean mySearch = searchHosts.contains(hostAddr) || searchHosts.contains(hostName);
+
+				// this index is disabled if the only host that searches it is the null host
+				boolean disabled =
+					"" != nullHost
+					&& searchHosts.contains( nullHost )
+					&& mySearchHosts.contains( nullHost )
+					&& 1 == searchHosts.size()
+					&& 1 == mySearchHosts.size();
+
 				String indexHost = getIndexHost(dbrole,dbname);
 				boolean myIndex = isMyHost(indexHost);
 				Hashtable<String,String> typeidParams = database.get(dbname).get(typeid);
@@ -766,41 +780,43 @@ public class GlobalConfiguration {
 				String oairepo = getOAIRepo(dbname);
 
 				IndexId iid = new IndexId(dbrole,
-						                    type,
-						                    indexHost,
-						                    rsyncIndexPath,
-						                    database.get(dbname).get(type),
-						                    typeidParams,
-						                    searchHosts,
-						                    mySearchHosts,
-						                    indexPath,
-						                    myIndex,
-						                    mySearch,
-						                    oairepo,
-						                    isSubdivided,
-						                    dbnameTitlesPart.get(dbname),
-						                    dbnameSuffix.get(dbname),
-						                    getSuffixToDBMap(dbrole,dbnameTitlesPart,dbnameSuffix));
+							  type,
+							  indexHost,
+							  rsyncIndexPath,
+							  database.get(dbname).get(type),
+							  typeidParams,
+							  searchHosts,
+							  mySearchHosts,
+							  indexPath,
+							  myIndex,
+							  mySearch,
+							  oairepo,
+							  isSubdivided,
+							  dbnameTitlesPart.get(dbname),
+							  dbnameSuffix.get(dbname),
+							  getSuffixToDBMap(dbrole,dbnameTitlesPart,dbnameSuffix),
+							  disabled);
 				indexIdPool.put(dbrole,iid);
 
 				// add precursor indexes
 				if(type.equals("spell") || type.equals("prefix")){
 					iid = new IndexId(dbrole+".pre",
-	                    "precursor",
-	                    indexHost,
-	                    rsyncIndexPath,
-	                    database.get(dbname).get(type),
-	                    typeidParams,
-	                    new HashSet<String>(), // precursors cannot be searched
-	                    new HashSet<String>(),
-	                    indexPath,
-	                    myIndex,
-	                    false,
-	                    oairepo,
-	                    isSubdivided,
-	                    dbnameTitlesPart.get(dbname),
-	                    dbnameSuffix.get(dbname),
-	                    getSuffixToDBMap(dbrole,dbnameTitlesPart,dbnameSuffix));
+							  "precursor",
+							  indexHost,
+							  rsyncIndexPath,
+							  database.get(dbname).get(type),
+							  typeidParams,
+							  new HashSet<String>(), // precursors cannot be searched
+							  new HashSet<String>(),
+							  indexPath,
+							  myIndex,
+							  false,
+							  oairepo,
+							  isSubdivided,
+							  dbnameTitlesPart.get(dbname),
+							  dbnameSuffix.get(dbname),
+							  getSuffixToDBMap(dbrole,dbnameTitlesPart,dbnameSuffix),
+							  false);
 					indexIdPool.put(dbrole+".pre",iid);
 				}
 				// add highlight indexes
@@ -811,23 +827,32 @@ public class GlobalConfiguration {
 					mySearchHosts = searchHosts;
 					// mySearchHosts = getMySearchHosts(dbname,dbrole);
 					mySearch = searchHosts.contains(hostAddr) || searchHosts.contains(hostName);
+					// this index is disabled if the only host that searches it is the null host
+					disabled =
+						"" != nullHost
+						&& searchHosts.contains( nullHost )
+						&& mySearchHosts.contains( nullHost )
+						&& 1 == searchHosts.size()
+						&& 1 == mySearchHosts.size();
+
 					// other options are identical!
 					iid = new IndexId(dbrole,
-							            type,
-							            indexHost,
-							            rsyncIndexPath,
-							            database.get(dbname).get(type),
-							            typeidParams,
-							            searchHosts,
-							            mySearchHosts,
-							            indexPath,
-							            myIndex,
-							            mySearch,
-							            oairepo,
-							            isSubdivided,
-							            dbnameTitlesPart.get(dbname),
-							            dbnameSuffix.get(dbname),
-							            getSuffixToDBMap(dbrole,dbnameTitlesPart,dbnameSuffix));
+							  type,
+							  indexHost,
+							  rsyncIndexPath,
+							  database.get(dbname).get(type),
+							  typeidParams,
+							  searchHosts,
+							  mySearchHosts,
+							  indexPath,
+							  myIndex,
+							  mySearch,
+							  oairepo,
+							  isSubdivided,
+							  dbnameTitlesPart.get(dbname),
+							  dbnameSuffix.get(dbname),
+							  getSuffixToDBMap(dbrole,dbnameTitlesPart,dbnameSuffix),
+							  disabled);
 					indexIdPool.put(dbrole,iid);
 				}
 
