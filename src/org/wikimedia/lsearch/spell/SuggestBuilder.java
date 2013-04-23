@@ -75,11 +75,6 @@ public class SuggestBuilder {
 					continue;
 				IndexId spell = iid.getSpell();
 				IndexId pre = spell.getPrecursor();
-				if(spell == null){
-					log.fatal("Index "+iid+" doesn't have a spell-check index assigned. Enable them in global configuration.");
-					continue;
-				}
-
 				if(inputfile != null){
 					log.info("Rebuilding precursor index...");
 					// open			

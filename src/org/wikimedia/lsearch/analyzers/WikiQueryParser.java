@@ -1560,22 +1560,6 @@ public class WikiQueryParser {
 		}
 		return ret;
 	}
-
-	/** Recursively transverse queries and put stop words to SHOULD */
-	private void filterStopWords(BooleanQuery bq) {
-		if(stopWords==null && stopWords.size()==0)
-			return;
-		for(BooleanClause cl : bq.getClauses()){
-			Query q = cl.getQuery();
-			Occur o = cl.getOccur();
-			if(q instanceof BooleanQuery){
-				filterStopWords((BooleanQuery)q);
-			} else if(q instanceof TermQuery && o.equals(Occur.MUST) 
-					&& stopWords.contains(((TermQuery)q).getTerm().text())){
-				cl.setOccur(Occur.SHOULD);
-			}
-		}
-	}
 	
 	/** @return new ParsedWords with stop words deleted */
 	private ParsedWords filterStopWords(ParsedWords words){

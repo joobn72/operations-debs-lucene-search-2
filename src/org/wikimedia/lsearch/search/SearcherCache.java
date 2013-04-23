@@ -101,6 +101,7 @@ public class SearcherCache {
 				if(iid.isArticleIndex() || iid.isTitlesBySuffix()){
 					IndexReader reader = searcher.getIndexReader();
 					ArrayList<CacheBuilder> builders = new ArrayList<CacheBuilder>();
+					@SuppressWarnings("rawtypes")
 					Collection fields = reader.getFieldNames(FieldOption.ALL);
 					for(Object fieldObj : fields){
 						String field = (String)fieldObj;

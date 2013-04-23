@@ -162,13 +162,15 @@ abstract public class PositionalScorer extends Scorer {
 		tfExplanation.setDescription("tf(freq=" + freq + ")");
 
 		// add extra info about every term in the sum
-		if(DEBUG && explanations != null && explanations.get(doc) != null){
-			Explanation eFreq = new Explanation();
-			eFreq.setValue(freq);
-			eFreq.setDescription("sum of:");				
-			for(Explanation e : explanations.get(doc))
-				eFreq.addDetail(e);
-			tfExplanation.addDetail(eFreq);
+		if(DEBUG) {
+			if(explanations != null && explanations.get(doc) != null){
+				Explanation eFreq = new Explanation();
+				eFreq.setValue(freq);
+				eFreq.setDescription("sum of:");
+				for(Explanation e : explanations.get(doc))
+					eFreq.addDetail(e);
+				tfExplanation.addDetail(eFreq);
+			}
 		}
 
 		return tfExplanation;

@@ -60,6 +60,7 @@ public class PositionalMultiQuery extends MultiPhraseQuery {
 			this.similarity = getSimilarity(searcher);
 			this.idf = 0;
 	      // compute idf - take average when multiple terms
+	      @SuppressWarnings("rawtypes")
 	      Iterator i = termArrays.iterator();
 	      int count = 0;
 	      while (i.hasNext()) {

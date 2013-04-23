@@ -142,6 +142,7 @@ public class MatchAllTitlesQuery extends Query {
 		return new MatchAllDocsWeight(searcher);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void extractTerms(Set terms) {
 	}
 

@@ -55,8 +55,6 @@ import java.util.*;
  * @see NumericCharacterReference
  */
 public class CharacterEntityReference {
-	private String name;
-
 	/** <samp>&nbsp;</samp> <code>&amp;nbsp; = &amp;#160;</code> -- no-break space = non-breaking space, U+00A0 ISOnum. */
 	public static final char _nbsp='\u00A0';
 	/** <samp>&iexcl;</samp> <code>&amp;iexcl; = &amp;#161;</code> -- inverted exclamation mark, U+00A1 ISOnum. */
