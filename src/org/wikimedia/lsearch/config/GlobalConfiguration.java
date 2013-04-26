@@ -5,9 +5,12 @@
 package org.wikimedia.lsearch.config;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
@@ -32,6 +35,10 @@ import org.wikimedia.lsearch.search.NamespaceFilter;
 import org.wikimedia.lsearch.util.Localization;
 import org.wikimedia.lsearch.util.PHPParser;
 import org.wikimedia.lsearch.util.StringUtils;
+
+// for debugging
+import static org.wikimedia.lsearch.util.Dump.dumpIterable;
+import static org.wikimedia.lsearch.util.Dump.dumpMap;
 
 /**
  * Read and parse the global configuration file, is also used
@@ -330,6 +337,40 @@ public class GlobalConfiguration {
 		return true;
 	}
 
+	private final boolean DBG = true;
+	private void dump( PrintWriter out ) {
+		dumpMap( "database",            database,            0, out );
+		dumpMap( "databaseHostGroup",   databaseHostGroup,   0, out );
+		dumpMap( "searchGroup",         searchGroup,         0, out );
+		dumpMap( "search",              search,              0, out );
+		dumpMap( "searchWildcard",      searchWildcard,      0, out );
+		dumpIterable( "searchOrphans",  searchOrphans,       0, out );
+		dumpMap( "index",               index,               0, out );
+		dumpMap( "indexWildcard",       indexWildcard,       0, out );
+		dumpMap( "indexLocation",       indexLocation,       0, out );
+		dumpMap( "indexRsyncPath",      indexRsyncPath,      0, out );
+		dumpMap( "namespacePrefix",     namespacePrefix,     0, out );
+		dumpMap( "oaiRepo",             oaiRepo,             0, out );
+		dumpMap( "wgLanguageCode",      wgLanguageCode,      0, out );
+		dumpMap( "wgServer",            wgServer,            0, out );
+		dumpMap( "wgDefaultSearch",     wgDefaultSearch,     0, out );
+		dumpMap( "suffixIwMap",         suffixIwMap,         0, out );
+		dumpMap( "wgContentNamespaces", wgContentNamespaces, 0, out );
+		dumpMap( "wgNamespacesWithSubpages", wgNamespacesWithSubpages, 0, out );
+
+		out.format( "indexPath = %s%nnamespacePrefixAll = %s%ncommonsWiki = %s%n",
+				   indexPath, namespacePrefixAll, commonsWiki );
+		out.format( "indexIdPool = { %d%n", indexIdPool.size() );
+		int i = 0;
+		ArrayList<String> keys = new ArrayList<String>( indexIdPool.keySet() );
+		Collections.sort( keys );
+		for ( String key : keys ) {
+			out.format( "[IndexId %d] %s =>%n", ++i, key );
+			indexIdPool.get( key ).dump( out );
+		}
+		out.println( "}" );
+	}  // dump
+
 	/**
 	 * Read a config file from a given URL
 	 *
@@ -338,13 +379,18 @@ public class GlobalConfiguration {
 	 */
 	public void readFromURL(URL url, String indexpath, String nullH ) throws IOException{
 		this.nullHost = nullH;
+
 		BufferedReader in;
 		try {
 			in = new BufferedReader(
 					new InputStreamReader(
 					url.openStream()));
 			read(in,indexpath);
-
+			if ( DBG ) {
+				PrintWriter out = new PrintWriter( new BufferedWriter( new FileWriter( "/var/tmp/global.txt" ) ) );
+				dump( out );
+				out.close();
+			}
 		} catch (IOException e) {
 			System.out.println("I/O Error in opening or reading global config at url "+url);
 			throw e;
@@ -577,6 +623,7 @@ public class GlobalConfiguration {
 			wgContentNamespaces = parser.getContentNamespaces(text);
 			Localization.readDBLocalizations(text);
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Error reading InitialiseSettings.php from url "+initset+" : "+e.getMessage());
 		}
 	}

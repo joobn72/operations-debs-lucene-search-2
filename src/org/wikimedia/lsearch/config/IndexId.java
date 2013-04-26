@@ -2,6 +2,8 @@ package org.wikimedia.lsearch.config;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -13,6 +15,10 @@ import org.apache.lucene.search.ArticleNamespaceScaling;
 import org.wikimedia.lsearch.analyzers.FilterFactory;
 import org.wikimedia.lsearch.search.NamespaceFilter;
 import org.wikimedia.lsearch.search.SearcherCache;
+
+// for debugging
+import static org.wikimedia.lsearch.util.Dump.dumpIterable;
+import static org.wikimedia.lsearch.util.Dump.dumpMap;
 
 /**
  * Encapsulated an index ID in form db.part, e.g. entest.mainpart.
@@ -35,7 +41,7 @@ public class IndexId {
 	/** Where the index is */
 	protected String indexHost;
 	/** Path to index on remote machine */
-	protected String indexRsyncPath; 
+	protected String indexRsyncPath;
 	
 	/** Type (single, mainsplit, split) in string repesentation */
 	protected String typeString; 
@@ -386,7 +392,59 @@ public class IndexId {
 		} */
 		
 	}
-	
+
+	private void dumpArray( String name, String v[], PrintWriter out ) {  // dump small array; for debugging
+		if ( null == v ) return;
+
+		out.format( "%s = [", name );
+		for ( String s : v ) {
+			out.format( "%s, ", s );
+		}
+		out.format( "]%n" );
+	}  // dumpArray
+
+	public void dump( PrintWriter out ) {    // for debugging
+		dumpMap( "typeParams", typeParams, 0, out );
+		dumpMap( "nssplitMap", nssplitMap, 0, out );
+		dumpMap( "params", params, 0, out );
+		dumpMap( "suffixIwMap", suffixIwMap, 0, out );
+		dumpMap( "suffixToDbname", suffixToDbname, 0, out );
+
+		dumpIterable( "searchHosts", searchHosts, 0, out );
+		dumpIterable( "mySearchHosts", mySearchHosts, 0, out );
+		dumpIterable( "namespaceSet", namespaceSet, 0, out );
+
+		dumpArray( "splitParts", splitParts, out );
+		dumpArray( "subParts", subParts, out );
+
+		out.format( "dbrole = %s%n"            + "indexHost = %s%n"      + "indexRsyncPath = %s%n"    +
+			    "typeString = %s%n"        + "mySearch = %s%n"       + "dbname = %s%n"            +
+			    "part = %s%n"              + "subpart = %s%n"        + "splitFactor = %d%n"       +
+			    "myIndex = %s%n"           + "subpartNum = %d%n"     + "subFactor = %d%n"         +
+			    "furtherSubdivided = %s%n" + "highlight = %s%n"      + "type = %s%n"              +
+			    "partNum = %d%n"           + "indexPath = %s%n"      + "searchPath = %s%n"        +
+			    "snapshotPath = %s%n"      + "updatePath = %s%n"     + "importPath = %s%n"        +
+			    "statusPath = %s%n"        + "tempPath = %s%n"       + "titlesIndex = %s%n"       +
+			    "titlesSuffix = %s%n"      + "reducedDbname = %s%n"  + "OAIRepository = %s%n"     +
+			    "rsyncSnapshotPath = %s%n" + "langCode = %s%n"       + "exactCase = %s%n"         +
+			    "defaultNs = %s%n"         + "nsWithSubpages = %s%n" + "contentNamespaces = %s%n" +
+			    "disabled = %s%n"         +
+			    "%n",
+			    dbrole,            indexHost,      indexRsyncPath,
+			    typeString,        mySearch,       dbname,
+			    part,              subpart,        splitFactor,
+			    myIndex,           subpartNum,     subFactor,
+			    furtherSubdivided, highlight,      type,
+			    partNum,           indexPath,      searchPath,
+			    snapshotPath,      updatePath,     importPath,
+			    statusPath,        tempPath,       titlesIndex,
+			    titlesSuffix,      reducedDbname,  OAIRepository,
+			    rsyncSnapshotPath, langCode,       exactCase,
+			    defaultNs,         nsWithSubpages, contentNamespaces,
+			    disabled
+			    );
+	}  // dump
+
 	/** If this is logical name referring to a set of split indexes */
 	public boolean isLogical(){
 		return (part == null && type != IndexType.SINGLE) || (subpart==null && furtherSubdivided);
