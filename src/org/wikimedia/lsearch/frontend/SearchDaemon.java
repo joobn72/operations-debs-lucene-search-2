@@ -447,14 +447,6 @@ public class SearchDaemon extends HttpHandler {
 			log.error("Error sending result line ("+score + " " + namespace + " " + title +"): "+e.getMessage(),e);
 		}
 	}
-	/** Unused? */
-	private void sendResultLine(String namespace, String title) {
-		try{
-			sendOutputLine(namespace + " " +	encodeTitle(title));
-		} catch(Exception e){
-			log.error("Error sending prefix result line (" + namespace + " " + title +"): "+e.getMessage(),e);
-		}
-	}
 
 	/**
 	 * Determine whether searchterm either contains a credit card number, 

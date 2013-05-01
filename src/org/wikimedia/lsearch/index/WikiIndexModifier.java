@@ -787,18 +787,6 @@ public class WikiIndexModifier {
 		}
 		return doc;
 	}
-
-	/** Serialize redirects that will be added to end of the article */
-	private static String serializeRedirects(ArrayList<String> redirectKeywords) {
-		if(redirectKeywords.size()==0)
-			return "";
-		StringBuilder sb = new StringBuilder();
-		for(String s : redirectKeywords){
-			sb.append(s);
-			sb.append(". ");
-		}
-		return sb.toString();
-	}
 	
 	/** Serialize alttitle (anchors, titles, redirects) to be added to end of contents */
 	public static String serializeAlttitle(Article article, boolean exactCase){

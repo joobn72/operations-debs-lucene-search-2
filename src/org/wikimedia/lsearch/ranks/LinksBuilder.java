@@ -11,15 +11,11 @@ import org.apache.log4j.Logger;
 import org.mediawiki.dumper.ProgressFilter;
 import org.mediawiki.dumper.Tools;
 import org.mediawiki.importer.XmlDumpReader;
-import org.wikimedia.lsearch.beans.Title;
 import org.wikimedia.lsearch.config.Configuration;
 import org.wikimedia.lsearch.config.GlobalConfiguration;
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.index.IndexThread;
-import org.wikimedia.lsearch.related.CompactArticleLinks;
-import org.wikimedia.lsearch.related.CompactLinks;
 import org.wikimedia.lsearch.related.Related;
-import org.wikimedia.lsearch.related.RelatedTitle;
 import org.wikimedia.lsearch.util.Localization;
 import org.wikimedia.lsearch.util.UnicodeDecomposer;
 
@@ -155,18 +151,6 @@ public class LinksBuilder {
 				score += 1.0/norm(refCache.get((int) (l1)));
 		}
 		return score;
-	}
-
-	/**
-	 * Get related titles (RelatedTitle is used in Article)
-	 */
-	public static ArrayList<RelatedTitle> getRelatedTitles(CompactArticleLinks cs, CompactLinks links){
-		ArrayList<Related> rel = null; // getRelated(cs,links);
-		ArrayList<RelatedTitle> ret = new ArrayList<RelatedTitle>();
-		for(Related r : rel){
-			ret.add(new RelatedTitle(new Title(r.getRelates().toString()),r.getScore()));
-		}
-		return ret;
 	}
 	
 	public static double norm(double d){

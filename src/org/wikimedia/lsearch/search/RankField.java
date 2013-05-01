@@ -39,6 +39,7 @@ public class RankField {
 		protected int[] ranks = null;
 		
 		protected RankFieldSource(IndexReader reader) throws IOException{
+			@SuppressWarnings("rawtypes")
 			Collection fields = reader.getFieldNames(FieldOption.ALL);
 			if(!fields.contains("rank"))
 				return; // index doesn't have ranking info

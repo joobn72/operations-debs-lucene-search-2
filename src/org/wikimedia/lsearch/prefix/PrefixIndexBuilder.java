@@ -411,6 +411,7 @@ public class PrefixIndexBuilder {
 	
 	/** Set omitNorms on all fields of the document */
 	protected void setOmitNorms(Document doc){
+		@SuppressWarnings("rawtypes")
 		Iterator it = doc.getFields().iterator();
 		while(it.hasNext()){
 			((Field)it.next()).setOmitNorms(true);

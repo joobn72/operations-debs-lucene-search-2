@@ -52,6 +52,7 @@ public class RelevanceQuery extends Query {
 	}
 
 	/*(non-Javadoc) @see org.apache.lucene.search.Query#extractTerms(java.util.Set) */
+	@SuppressWarnings("rawtypes")
 	public void extractTerms(Set terms) {
 		main.extractTerms(terms);
 		for(Query r : relevance)

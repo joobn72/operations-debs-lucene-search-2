@@ -35,7 +35,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 /** Extract parameters from an URL */
-public class QueryStringMap extends LinkedHashMap implements Map {
+public class QueryStringMap extends LinkedHashMap<String,Object> implements Map<String,Object> {
 	
 	public QueryStringMap(URI uri) {
 		super();

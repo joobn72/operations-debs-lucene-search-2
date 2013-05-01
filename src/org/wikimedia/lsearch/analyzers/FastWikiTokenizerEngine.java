@@ -748,21 +748,6 @@ public class FastWikiTokenizerEngine {
 		return false;
 	}
 	
-	/** Check if the external link is valid, i.e. if it's a valid URL */
-	private final boolean validateExternalLink(){
-		if(cur + 1 >= textLength)
-			return false;
-		cur++; // position after the '[' char
-		for(String p : PROTOCOLS){
-			if(matchesString(p)){
-				cur--;
-				return true;
-			}
-		}
-		cur--;
-		return false;
-	}
-	
 	/** Returns true if the parsed article is a redirect page */
 	public final boolean isRedirect(){
 		if(textLength == 0 || text[0] != '#') // quick test
