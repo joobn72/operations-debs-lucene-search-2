@@ -23,6 +23,7 @@
  */
 package org.wikimedia.lsearch.frontend;
 
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
@@ -41,6 +42,7 @@ import org.wikimedia.lsearch.statistics.StatisticsThread;
  */
 public class SearchServer extends Thread {
 	private static int port = 8123;
+	private static boolean listenLocalOnly = false;
 	private static int maxThreads = 80;
 	private static ServerSocket sock;
 	public static String indexPath;
@@ -56,17 +58,22 @@ public class SearchServer extends Thread {
 	public void startServer(){
 		config = Configuration.open();
 		SearchServer.port = config.getInt("Search","port",8123);
+		SearchServer.listenLocalOnly = config.getBoolean("Search","listenLocalOnly",false);
 		/** Logger */
 		org.apache.log4j.Logger log = Logger.getLogger(SearchServer.class);
 		
-		log.info("Searcher started on port " + port);
-		
 		try {
-			sock = new ServerSocket(port);
+			if (listenLocalOnly){
+				sock = new ServerSocket(port, 0, InetAddress.getByName(null));
+			}else{
+				sock = new ServerSocket(port);
+			}
 		} catch (Exception e) {
 			log.fatal("Error: bind error: " + e.getMessage());
 			return;
 		}
+
+		log.info("Searcher started on port " + port+" ("+sock.getInetAddress()+")");
 		
 		String max = config.getString("Daemon", "maxworkers");
 		if (max != null)

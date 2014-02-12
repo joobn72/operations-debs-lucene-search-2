@@ -5,6 +5,7 @@
 package org.wikimedia.lsearch.frontend;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
@@ -39,9 +40,14 @@ public class HTTPIndexServer extends Thread {
 		org.apache.log4j.Logger log = Logger.getLogger(HTTPIndexServer.class);
 		
 		int port = config.getInt("Index","port",8321);
-		
+		boolean listenLocalOnly = config.getBoolean("Index","listenLocalOnly",false);
+
 		try {
-			sock = new ServerSocket(port);
+			if (listenLocalOnly){
+				sock = new ServerSocket(port, 0, InetAddress.getByName(null));
+			}else{
+				sock = new ServerSocket(port);
+			}
 		} catch (Exception e) {
 			log.fatal("Dying: bind error: " + e.getMessage());
 			return;
@@ -49,7 +55,7 @@ public class HTTPIndexServer extends Thread {
 		
 		ExecutorService pool = Executors.newFixedThreadPool(maxThreads);
 		
-		log.info("Indexer started on port "+port);
+		log.info("Indexer started on port "+port+" ("+sock.getInetAddress()+")");
 		
 		for (;;) {
 			Socket client = null; 
